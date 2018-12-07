@@ -1,0 +1,6 @@
+.settings/
+.idea/
+.DS_Store
+node_modules/
+Temp/
+package-lock.json
