@@ -57,7 +57,7 @@ const webpackConfig = merge(baseWebpackConfig, {
     }),
     new HtmlWebpackPlugin({
       filename: config.build.index,
-      template: `${process.cwd()}/src/knife/view/index.html`,
+      template: `${process.cwd()}/src/sheep/view/index.html`,
       inject: true,
       minify: {
         removeComments: true,
