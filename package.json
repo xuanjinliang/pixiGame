@@ -52,6 +52,6 @@
   },
   "browserslist": [
     "android >= 4",
-    "iOS >= 7"
+    "ios >= 6"
   ]
 }
