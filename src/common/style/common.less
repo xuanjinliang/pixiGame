@@ -1,5 +1,8 @@
 @import "commonFun.less";
 
+@width:100%;
+@height:100%;
+
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -14,18 +17,24 @@ figure, figcaption, footer, header, hgroup,
 menu, nav, output, ruby, section, summary,
 time, mark, audio, video{
   .reset-box-model-mixin();
-
   font-weight: inherit;
   font-style: inherit;
   font-size: 100%;
-  font-family: inherit;
+  font-family:Microsoft YaHei,\5b8b\4f53, sans-serif, \5FAE\8F6F\96C5\9ED1, Arial, Verdana;
   vertical-align: baseline;
+  background: transparent;
+  text-shadow: none;
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  -webkit-touch-callout:none; /*禁用IOS的复制粘贴功能*/
+  -webkit-font-smoothing: antialiased;
 }
 
 html{
   line-height: 1;
   color: black;
   background: white;
+  -webkit-text-size-adjust: none !important;
+  -ms-text-size-adjust: none !important;
 }
 
 ol, ul{
@@ -54,4 +63,80 @@ q, blockquote{
 a img{
   .reset-box-model-mixin();
   border: none;
+}
+
+a {
+  background-color: transparent;
+  text-decoration: none;
+}
+a:active,
+a:hover {
+  outline: 0;
+}
+
+em{
+  font-style: normal;
+}
+
+html,body{
+  position: relative;
+  width: @width;
+  height: @height;
+  min-width: 320px;
+  min-height: 416px;
+  margin: 0 auto;
+}
+
+.clear:after{
+  content:""; display:block; height:0; visibility:hidden; clear:both;
+}
+
+.block{
+  display: block !important;
+}
+
+.none{
+  display: none !important;
+}
+
+.visible{
+  visibility: visible !important;
+}
+
+.hidden{
+  visibility: hidden !important;
+}
+
+.imgW{
+  width: @width;
+  vertical-align: top;
+}
+
+.imgH{
+  height: @height;
+  vertical-align: top;
+}
+
+.vertical {
+  display: flex;
+  box-align: center;
+}
+
+.horizontal {
+  display: flex;
+  box-pack: center;
+}
+
+body{
+  background-color: #f7f7f7;
+  overflow: hidden;
+}
+
+#main{
+  position: relative;
+  top: 0;
+  width: @width;
+  height: @height;
+  overflow: hidden;
+  z-index: 1;
 }

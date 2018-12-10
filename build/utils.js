@@ -47,6 +47,8 @@ exports.cssLoaders = (options = {}) => {
         use: loaders
       });
     }
+
+    return ['style-loader'].concat(loaders)
   }
 
   return {
@@ -68,6 +70,7 @@ exports.styleLoaders = function (options) {
     });
   }
 
+  //console.log(JSON.stringify(output, null, "\t"));
   return output;
 };
 

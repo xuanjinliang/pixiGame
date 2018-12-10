@@ -3,6 +3,7 @@
  */
 
 import * as PIXI from 'pixi.js';
+import '../../common/style/common.less';
 
 let type = "WebGL";
 if(!PIXI.utils.isWebGLSupported()){
