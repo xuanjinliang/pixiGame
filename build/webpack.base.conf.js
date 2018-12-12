@@ -13,8 +13,7 @@ const createLintingRule = () => ({
   test: /\.(js)$/,
   loader: 'eslint-loader',
   enforce: 'pre',
-  exclude: /node_modules/,
-  include: [resolve(config.dev.assetsSubDirectory)],
+  exclude: [/node_modules/, '/dist/'],
   options: {
     formatter: require('eslint-friendly-formatter'),
     emitWarning: !config.dev.showEslintErrorsInOverlay
@@ -35,7 +34,8 @@ module.exports = {
   resolve: {
     extensions: [".js", ".json"],
     alias: {
-      '@': resolve('src')
+      '@': resolve('src'),
+      'common': resolve('src/common/js/common.js')
     }
   },
   module: {

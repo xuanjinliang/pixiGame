@@ -3,26 +3,86 @@
  */
 
 import * as PIXI from 'pixi.js';
+import 'pixi-tween';
 import '../../common/style/common.less';
 
 import config from './config';
 import resource from './resource';
+import GameBg from './gameBg';
+import Content from "./content";
 
 class Index {
   constructor(){
+    this.loadComplete = false;
+    this.container = null;
+    this.gameBg = new GameBg();
+    this.content = null;
+  }
 
+  setContainer(){
+    this.container = new PIXI.Container();
+
+    this.container.width = config.containerW;
+    this.container.height = config.containerH;
+
+    this.setContainerLocation();
+
+    this.content = new Content();
+
+    this.container.addChild(this.content.setContentRect());
+
+    /*const tween = PIXI.tweenManager.createTween(this.gameBg.setBg());
+    tween.from({ x: 0 }).to({ x: 250 });
+    tween.time = 1000;
+    tween.repeat = 10;
+    tween.on('start', () => {
+      console.log('tween started');
+    });
+    tween.on('repeat', ( loopCount ) => {
+      console.log(`loopCount:${loopCount}`);
+    });
+    tween.start();*/
+
+    config.stage.addChild(this.gameBg.setBg(), this.container, this.gameBg.setShade(config.stageW, config.stageH));
   }
 
   handleFileLoad(){
-    console.log(resource.mainfest);
+    let that = this;
     PIXI.loader.add(resource.mainfest)
-      .on("progress", (loader, resource) => {
-        console.log("loading: " + resource.url);
-        console.log("progress: " + loader.progress + "%");
-      })
+      /*.on("progress", (loader, resource) => {
+        //console.log(resource);
+        //console.log(loader);
+      })*/
       .load(() => {
-        console.log("All files loaded");
+        //console.log(PIXI.loader.resources['bg1']);
+        that.loadLoadingComplete();
       });
+  }
+
+  loadLoadingComplete() {
+    this.loadComplete = true;
+    this.setContainer();
+  }
+
+  setContainerLocation() {
+    if(config.canvasW / config.canvasH > config.WHRadio){
+      config.containerRadio = config.stageH / config.containerH;
+      this.container.x = (config.stageW - config.containerW * config.containerRadio) / 2;
+    }else{
+      config.containerRadio = config.stageW / config.containerW;
+      this.container.x = 0;
+    }
+    this.container.y = (config.stageH - config.containerH * config.containerRadio) / 2;
+    this.container.scale.set(config.containerRadio);
+
+    this.gameBg.resizeBg();
+    this.gameBg.resizeShade(config.stageW, config.stageH);
+    /*config.success.resize();
+    config.fail.resize();*/
+  }
+
+  stageBreakHandler() {
+    PIXI.tweenManager.update();
   }
 
   resizeCanvas(){
@@ -39,6 +99,10 @@ class Index {
       config.app.renderer.resize(config.stageW, config.stageH);
 
       config.app.view.style = `width:${config.canvasW}px;height:${config.canvasH}px;`;
+
+      if(this.loadComplete){
+        this.setContainerLocation();
+      }
     }
   }
 
@@ -53,6 +117,8 @@ class Index {
     document.querySelector('#main').appendChild(config.app.view);
     this.resizeCanvas();
     this.handleFileLoad();
+
+    config.app.ticker.add(this.stageBreakHandler.bind(this));
   }
 
   event(){

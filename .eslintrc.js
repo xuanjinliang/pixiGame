@@ -112,7 +112,19 @@ module.exports = {
     "no-array-constructor": 2,
     "no-bitwise": 2,
     "no-lonely-if": 1,
-    "no-mixed-operators": 2,
+    "no-mixed-operators": [
+      2,
+      {
+        "groups": [
+          ["%", "**"],
+          ["&", "|", "^", "~", "<<", ">>", ">>>"],
+          ["==", "!=", "===", "!==", ">", ">=", "<", "<="],
+          ["&&", "||"],
+          ["in", "instanceof"]
+        ],
+        "allowSamePrecedence": true
+      }
+    ],
     "no-new-object": 2,
     "no-restricted-syntax": [
       2,
@@ -122,7 +134,6 @@ module.exports = {
     "no-underscore-dangle": 1,
     "no-unneeded-ternary": 2,
     "no-whitespace-before-property": 2,
-    "object-property-newline": 2,
     "one-var-declaration-per-line": 2,
     "operator-linebreak": [
       2,

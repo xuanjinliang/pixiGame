@@ -19,6 +19,8 @@
   },
   "homepage": "https://github.com/xuanjinliang/pixiGame#readme",
   "dependencies": {
+    "lodash": "^4.17.11",
+    "pixi-tween": "^0.2.0",
     "pixi.js": "^4.8.3"
   },
   "devDependencies": {

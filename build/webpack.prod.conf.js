@@ -43,7 +43,7 @@ const webpackConfig = merge(baseWebpackConfig, {
       parallel: true
     }),
     new ExtractTextPlugin({
-      filename: utils.assetsPath('css/[name].[contenthash].css'),
+      filename: utils.assetsPath('css/[name].[md5:contenthash:hex:20].css'),
       allChunks: true
     }),
     new OptimizeCSSPlugin({
