@@ -5,12 +5,13 @@
 import * as PIXI from 'pixi.js';
 import progressBarJson from "../json/progressBar";
 
+let progressBarSheet = null;
+
 class ProgressBar{
   constructor() {
     this.container = new PIXI.Container();
     this.containerW = 314;
     this.containerH = 42;
-    this.progressBarSheet = null;
     this.progressBarAnimate = null;
     this.pBar = null;
     this.fontText = null;
@@ -21,17 +22,24 @@ class ProgressBar{
   }
 
   setProgressBar(){
+    let progressBarAnimate = new PIXI.Sprite(progressBarSheet.textures['progressBar3.png']);
+    progressBarAnimate.scale.set(this.containerW / progressBarAnimate.width, this.containerH / progressBarAnimate.height);
+
+    return progressBarAnimate;
+  }
+
+  loadProgressBarSheet() {
     let that = this;
     return new Promise((resolve) => {
-      that.progressBarSheet = new PIXI.Spritesheet(PIXI.loader.resources['progressBar'].texture.baseTexture, progressBarJson);
+      if(!progressBarSheet){
+        progressBarSheet = new PIXI.Spritesheet(PIXI.loader.resources['progressBar'].texture.baseTexture, progressBarJson);
 
-      that.progressBarSheet.parse(() => {
-
-        let progressBarAnimate = new PIXI.Sprite(that.progressBarSheet.textures['progressBar3.png']);
-        progressBarAnimate.scale.set(that.containerW / progressBarAnimate.width, that.containerH / progressBarAnimate.height);
-
-        resolve(progressBarAnimate);
-      });
+        progressBarSheet.parse(() => {
+          resolve(that.setProgressBar());
+        });
+      }else{
+        resolve(that.setProgressBar());
+      }
     });
   }
 
@@ -40,7 +48,7 @@ class ProgressBar{
 
     this.container.removeChild(that.progressBarAnimate);
 
-    that.progressBarAnimate = new PIXI.extras.AnimatedSprite(that.progressBarSheet.animations.progressBar);
+    that.progressBarAnimate = new PIXI.extras.AnimatedSprite(progressBarSheet.animations.progressBar);
     that.progressBarAnimate.scale.set(that.containerW / that.progressBarAnimate.width, that.containerH / that.progressBarAnimate.height);
 
     that.progressBarAnimate.loop = true;
@@ -99,7 +107,7 @@ class ProgressBar{
 
   init() {
     let that = this;
-    this.setProgressBar().then((result) => {
+    this.loadProgressBarSheet().then((result) => {
       that.progressBarAnimate = result;
       this.container.addChildAt(this.progressBarAnimate, 0);
     });

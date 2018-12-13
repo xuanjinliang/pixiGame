@@ -50,11 +50,11 @@ class Index {
     let that = this;
     PIXI.loader.add(resource.mainfest)
       /*.on("progress", (loader, resource) => {
-        //console.log(resource);
-        //console.log(loader);
+        console.log(resource);
+        console.log(loader);
       })*/
       .load(() => {
-        //console.log(PIXI.loader.resources['bg1']);
+        //console.log(loader, resources);
         that.loadLoadingComplete();
       });
   }

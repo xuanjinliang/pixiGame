@@ -16,6 +16,11 @@ import bSheep1 from "../images/bSheep1.png";
 import bSheep2 from "../images/bSheep2.png";
 import bSheep3 from "../images/bSheep3.png";
 import trackBg from "../images/trackBg.png";
+import tipsBg from "../images/tipsBg.png";
+import clickTips from "../images/clickTips.png";
+import clickTips1 from "../images/clickTips1.png";
+import touch from "../images/touch.png";
+import finger from "../images/finger.png";
 
 
 export default {
@@ -75,6 +80,26 @@ export default {
     {
       url: trackBg,
       name: "trackBg"
+    },
+    {
+      url: tipsBg,
+      name: "tipsBg"
+    },
+    {
+      url: clickTips,
+      name: "clickTips"
+    },
+    {
+      url: clickTips1,
+      name: "clickTips1"
+    },
+    {
+      url: touch,
+      name: "touch"
+    },
+    {
+      url: finger,
+      name: "finger"
     }
   ]
 };
