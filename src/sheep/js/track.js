@@ -4,21 +4,33 @@
 
 import {Container, Sprite, loader, Graphics, tweenManager, tween} from "pixi.js";
 import Tips from './tips';
+import EachTrack from './eachTrack';
 import {angleToRadians} from 'common';
 
 class Track{
   constructor() {
-    this.container = null;
+    this.container = new Container();
     this.fingerCon = null;
     this.containerW = 293;
     this.containerH = 455;
     this.cutWidth = 323;
     this.cutX = -(this.cutWidth - this.containerW) / 2;
     this.recordTrackName = '';
-    this.trackArray = ['first', 'second', 'third', 'fourth', 'fifth'];
+    this.runTrack_first = new EachTrack('first');
+    //this.trackArray = ['first', 'second', 'third', 'fourth', 'fifth'];
+    this.trackArray = ['first'];
     this.gameStart = false;
     this.addBsheepTimeout = null;
     this.tips = new Tips();
+  }
+
+  event() {
+    console.log(123);
+    console.log(this.container, this.container.width);
+    this.container.interactive = true;
+    this.container.on('tap', (event) => {
+      console.log(event);
+    });
   }
 
   finger() {
@@ -72,8 +84,6 @@ class Track{
   init() {
     let that = this;
 
-    that.container = new Container();
-
     let trackBg = new Sprite(loader.resources['trackBg'].texture);
 
     trackBg.scale.set(this.containerW / trackBg.width, this.containerH / trackBg.height);
@@ -92,11 +102,22 @@ class Track{
     that.fingerCon.x = 0;
     that.fingerCon.y = that.containerW / 2;
 
-    that.container.addChild(mask, trackBg, tips, that.fingerCon);
+    that.container.addChild(mask, trackBg, tips/*, that.fingerCon*/);
 
     setTimeout(() => {
       that.container.removeChild(tips);
     }, 2000);
+
+    that.trackArray.forEach((name, index) => {
+      let runTrackCon = that[`runTrack_${name}`].init();
+      runTrackCon.x = 8 * (index + 1) + that[`runTrack_${name}`].containerW * index;
+      if(index <= 1){
+        runTrackCon.x += 4;
+      }
+      that.container.addChild(runTrackCon);
+    });
+
+    that.event();
 
     return that.container;
 

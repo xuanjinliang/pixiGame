@@ -21,6 +21,7 @@ import clickTips from "../images/clickTips.png";
 import clickTips1 from "../images/clickTips1.png";
 import touch from "../images/touch.png";
 import finger from "../images/finger.png";
+import track from "../images/track.png";
 
 
 export default {
@@ -100,6 +101,10 @@ export default {
     {
       url: finger,
       name: "finger"
+    },
+    {
+      url: track,
+      name: "track"
     }
   ]
 };

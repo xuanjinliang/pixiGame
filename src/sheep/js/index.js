@@ -118,6 +118,11 @@ class Index {
     this.resizeCanvas();
     this.handleFileLoad();
 
+    /*config.stage.interactive = true;
+    config.stage.on('tap', function(event){
+      console.log(321, event);
+    });*/
+
     config.app.ticker.add(this.stageBreakHandler.bind(this));
   }
 
