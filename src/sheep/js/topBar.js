@@ -27,10 +27,16 @@ class TopBar{
 
     progressBarCon.y = titiBgH;
 
+    let icon = new PIXI.Sprite(PIXI.loader.resources['bSheep3'].texture);
+    icon.pivot.x = icon.width / 2;
+    icon.x = this.containerW / 2;
+    icon.y = 3;
+    icon.scale.set(57 / icon.width, 46 / icon.height);
+
     this.container.width = this.containerW;
     this.container.height = this.containerH;
 
-    this.container.addChild(titleBg, progressBarCon);
+    this.container.addChild(titleBg, progressBarCon, icon);
 
     return this.container;
 

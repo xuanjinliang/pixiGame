@@ -12,6 +12,11 @@ import load from "../images/load.png";
 import titleBg from "../images/titleBg.png";
 import progressBar from "../images/progressBar.png";
 import pBar from "../images/pBar.png";
+import bSheep1 from "../images/bSheep1.png";
+import bSheep2 from "../images/bSheep2.png";
+import bSheep3 from "../images/bSheep3.png";
+import trackBg from "../images/trackBg.png";
+
 
 export default {
   mainfest: [
@@ -54,6 +59,22 @@ export default {
     {
       url: pBar,
       name: "pBar"
+    },
+    {
+      url: bSheep1,
+      name: "bSheep1"
+    },
+    {
+      url: bSheep2,
+      name: "bSheep2"
+    },
+    {
+      url: bSheep3,
+      name: "bSheep3"
+    },
+    {
+      url: trackBg,
+      name: "trackBg"
     }
   ]
 };

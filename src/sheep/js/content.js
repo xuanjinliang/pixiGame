@@ -6,6 +6,8 @@ import * as PIXI from "pixi.js";
 import config from './config';
 import ScrollButton from './ScrollButton';
 import TopBar from './topBar';
+import Track from './track';
+import ProgressBar from './progressBar';
 
 class Content{
   constructor() {
@@ -15,6 +17,8 @@ class Content{
     this.guardBar = null;
     this.scrollButton = new ScrollButton();
     this.topBar = new TopBar();
+    this.track = new Track();
+    this.footBar = new ProgressBar();
   }
 
   setGuardBar() {
@@ -43,13 +47,25 @@ class Content{
 
     let topBarCon = this.topBar.init();
 
+    topBarCon.x = 54;
+
+    let trackCon = this.track.init();
+
+    trackCon.x = 64;
+    trackCon.y = this.topBar.containerH;
+
+    let footBarCon = this.footBar.init();
+
+    footBarCon.x = 54;
+    footBarCon.y = topBarCon.height + this.track.containerH;
+
     this.container.x = 0;
     this.container.y = 24;
 
     this.container.width = this.containerW;
     this.container.height = this.containerH;
 
-    this.container.addChild(mask, shape, gbCon, scrollCon, topBarCon);
+    this.container.addChild(mask, shape, gbCon, scrollCon, topBarCon, trackCon, footBarCon);
     this.container.mask = mask;
 
     return this.container;
