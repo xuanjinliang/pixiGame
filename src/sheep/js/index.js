@@ -119,7 +119,8 @@ class Index {
     this.handleFileLoad();
 
     /*config.stage.interactive = true;
-    config.stage.on('tap', function(event){
+    config.stage.buttonMode = true;
+    config.stage.on('click', function(event){
       console.log(321, event);
     });*/
 

@@ -2,6 +2,7 @@
  * Created by xuanjinliang on 2018/12/13.
  */
 
+import _ from 'lodash';
 import {Container, Sprite, loader, Graphics, tweenManager, tween} from "pixi.js";
 import Tips from './tips';
 import EachTrack from './eachTrack';
@@ -25,11 +26,37 @@ class Track{
   }
 
   event() {
-    console.log(123);
-    console.log(this.container, this.container.width);
+    //let that = this;
     this.container.interactive = true;
     this.container.on('tap', (event) => {
-      console.log(event);
+      event.stopPropagation();
+
+      if(this.fingerCon.alpha == 0){
+        return;
+      }
+
+      if(this.container.getChildIndex(this.fingerCon) > -1){
+        this.container.removeChild(this.fingerCon);
+      }
+
+      let target = null,
+        array = [];
+
+      if(_.isArray(event.target.children)){
+        array = event.target.children;
+      }
+      if(array.length <= 0){
+        return;
+      }
+
+      for(let i = 0, l = array.length; i < l; i++){
+        if(array[i].name && this.trackArray.indexOf(array[i].name) > -1){
+          target = array[i];
+          break;
+        }
+      }
+
+      console.log(target, target.name);
     });
   }
 
@@ -52,7 +79,7 @@ class Track{
 
     fingerCon.addChild(touch, finger);
 
-    let runTime = 500;
+    let runTime = 600;
     const fingerTween = tweenManager.createTween(finger);
     fingerTween.loop = true;
     fingerTween.pingPong = true;
@@ -101,11 +128,13 @@ class Track{
 
     that.fingerCon.x = 0;
     that.fingerCon.y = that.containerW / 2;
+    that.fingerCon.alpha = 0;
 
-    that.container.addChild(mask, trackBg, tips/*, that.fingerCon*/);
+    that.container.addChild(mask, trackBg, tips, that.fingerCon);
 
     setTimeout(() => {
       that.container.removeChild(tips);
+      that.fingerCon.alpha = 1;
     }, 2000);
 
     that.trackArray.forEach((name, index) => {
@@ -114,6 +143,7 @@ class Track{
       if(index <= 1){
         runTrackCon.x += 4;
       }
+
       that.container.addChild(runTrackCon);
     });
 

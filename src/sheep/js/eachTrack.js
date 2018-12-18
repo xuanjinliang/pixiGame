@@ -2,7 +2,7 @@
  * Created by xuanjinliang on 2018/12/13.
  */
 
-import {Container, Sprite, loader} from "pixi.js";
+import {Container, Sprite, loader, Rectangle} from "pixi.js";
 
 class EachTrack{
   constructor(name){
@@ -29,11 +29,13 @@ class EachTrack{
     let runTrack = new Sprite(loader.resources['track'].texture);
 
     runTrack.scale.set(this.containerW / runTrack.width, this.containerH / runTrack.height);
-    runTrack.name = this.name;
 
-    runTrack.alpha = 1;
+    runTrack.alpha = 0;
 
+    this.container.name = this.name;
     this.container.addChild(runTrack);
+
+    this.container.hitArea = new Rectangle(0, 0, runTrack.width, runTrack.height);
 
     return this.container;
   }

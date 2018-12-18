@@ -35,7 +35,7 @@ class Content{
 
   setContentRect() {
     let mask = new PIXI.Graphics();
-    mask.drawRect(0, 0, this.containerW, this.containerH).closePath();
+    mask.beginFill().drawRect(0, 0, this.containerW, this.containerH).closePath();
 
     let shape = new PIXI.Graphics();
     shape.beginFill('0x000000').drawRect(0, 0, this.containerW, this.containerH).closePath();
