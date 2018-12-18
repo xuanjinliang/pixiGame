@@ -16,7 +16,6 @@ class Index {
     this.loadComplete = false;
     this.container = null;
     this.gameBg = new GameBg();
-    this.content = null;
   }
 
   setContainer(){
@@ -27,21 +26,9 @@ class Index {
 
     this.setContainerLocation();
 
-    this.content = new Content();
+    config.content = new Content();
 
-    this.container.addChild(this.content.setContentRect());
-
-    /*const tween = PIXI.tweenManager.createTween(this.gameBg.setBg());
-    tween.from({ x: 0 }).to({ x: 250 });
-    tween.time = 1000;
-    tween.repeat = 10;
-    tween.on('start', () => {
-      console.log('tween started');
-    });
-    tween.on('repeat', ( loopCount ) => {
-      console.log(`loopCount:${loopCount}`);
-    });
-    tween.start();*/
+    this.container.addChild(config.content.setContentRect());
 
     config.stage.addChild(this.gameBg.setBg(), this.container, this.gameBg.setShade(config.stageW, config.stageH));
   }

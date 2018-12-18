@@ -2,7 +2,8 @@
  * Created by xuanjinliang on 2018/12/13.
  */
 
-import {Container, Sprite, loader, Rectangle} from "pixi.js";
+import {Container, Sprite, loader, Rectangle, tweenManager, tween} from "pixi.js";
+import Sheep from "./sheep";
 
 class EachTrack{
   constructor(name){
@@ -23,19 +24,57 @@ class EachTrack{
     this.cry2Timeout = null;
     this.space = null;
     this.spaceTimeout = null;
+    this.runTrackTween = null;
+  }
+
+  addSheep(name, energy) {
+    let sheep = new Sheep(this.containerW, this.containerH, energy);
+
+    let con = sheep.init(name);
+
+    //con.y = sheep.sheepMaxHeight;
+    //con.y = 83;
+
+    this.container.addChildAt(con, 0);
+
+    setTimeout(sheep.runFlash.bind(sheep), 1000);
+
+    /*if(name.indexOf('b') > -1){
+      this.trackBArray.push(sheep);
+    }else{
+      this.trackWArray.push(sheep);
+    }*/
+  }
+
+  trackFlash() {
+    if(this.runTrackTween && this.runTrackTween.active){
+      return;
+    }
+
+    this.runTrackTween = tweenManager.createTween(this.runTrack);
+    this.runTrackTween.repeat = 1;
+    this.runTrackTween.pingPong = true;
+    this.runTrackTween.time = 300;
+    this.runTrackTween.easing = tween.Easing.linear();
+    this.runTrackTween.to({
+      alpha: 1
+    }).start();
   }
 
   init() {
-    let runTrack = new Sprite(loader.resources['track'].texture);
+    this.runTrack = new Sprite(loader.resources['track'].texture);
 
-    runTrack.scale.set(this.containerW / runTrack.width, this.containerH / runTrack.height);
+    this.runTrack.scale.set(this.containerW / this.runTrack.width, this.containerH / this.runTrack.height);
 
-    runTrack.alpha = 0;
+    this.runTrack.alpha = 0;
 
     this.container.name = this.name;
-    this.container.addChild(runTrack);
+    this.container.addChild(this.runTrack);
 
-    this.container.hitArea = new Rectangle(0, 0, runTrack.width, runTrack.height);
+    this.addSheep('b2', 60);
+    this.addSheep('w2', 60);
+
+    this.container.hitArea = new Rectangle(0, 0, this.runTrack.width, this.runTrack.height);
 
     return this.container;
   }

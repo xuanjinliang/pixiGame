@@ -22,7 +22,11 @@ import clickTips1 from "../images/clickTips1.png";
 import touch from "../images/touch.png";
 import finger from "../images/finger.png";
 import track from "../images/track.png";
-
+import sheep from "../images/sheep.png";
+import smiling1 from "../images/smiling1.png";
+import smiling2 from "../images/smiling2.png";
+import smilingBg from "../images/smilingBg.png";
+import sleep from "../images/sleep.png";
 
 export default {
   mainfest: [
@@ -105,6 +109,26 @@ export default {
     {
       url: track,
       name: "track"
+    },
+    {
+      url: sheep,
+      name: "sheep"
+    },
+    {
+      url: smiling1,
+      name: "smiling1"
+    },
+    {
+      url: smiling2,
+      name: "smiling2"
+    },
+    {
+      url: smilingBg,
+      name: "smilingBg"
+    },
+    {
+      url: sleep,
+      name: "sleep"
     }
   ]
 };

@@ -4,6 +4,7 @@
 
 import * as PIXI from 'pixi.js';
 import progressBarJson from "../json/progressBar";
+import {loadSheet} from "common";
 
 let progressBarSheet = null;
 
@@ -30,16 +31,9 @@ class ProgressBar{
 
   loadProgressBarSheet() {
     let that = this;
-    return new Promise((resolve) => {
-      if(!progressBarSheet){
-        progressBarSheet = new PIXI.Spritesheet(PIXI.loader.resources['progressBar'].texture.baseTexture, progressBarJson);
-
-        progressBarSheet.parse(() => {
-          resolve(that.setProgressBar());
-        });
-      }else{
-        resolve(that.setProgressBar());
-      }
+    return loadSheet('progressBar', progressBarJson).then((result) => {
+      progressBarSheet = result;
+      return that.setProgressBar();
     });
   }
 

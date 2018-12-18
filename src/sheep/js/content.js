@@ -57,7 +57,7 @@ class Content{
     let footBarCon = this.footBar.init();
 
     footBarCon.x = 54;
-    footBarCon.y = topBarCon.height + this.track.containerH;
+    footBarCon.y = this.topBar.containerH + this.track.containerH;
 
     this.container.x = 0;
     this.container.y = 24;

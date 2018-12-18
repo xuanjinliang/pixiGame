@@ -7,6 +7,7 @@ import {Container, Sprite, loader, Graphics, tweenManager, tween} from "pixi.js"
 import Tips from './tips';
 import EachTrack from './eachTrack';
 import {angleToRadians} from 'common';
+/*import config from 'config';*/
 
 class Track{
   constructor() {
@@ -31,13 +32,14 @@ class Track{
     this.container.on('tap', (event) => {
       event.stopPropagation();
 
-      if(this.fingerCon.alpha == 0){
+      /*if(this.fingerCon && this.fingerCon.alpha == 0){
         return;
       }
 
-      if(this.container.getChildIndex(this.fingerCon) > -1){
+      if(this.fingerCon){
         this.container.removeChild(this.fingerCon);
-      }
+        this.fingerCon = null;
+      }*/
 
       let target = null,
         array = [];
@@ -56,7 +58,17 @@ class Track{
         }
       }
 
-      console.log(target, target.name);
+      if(!target){
+        return;
+      }
+
+      let track = this[`runTrack_${target.name}`];
+
+      track.trackFlash();
+
+      //let recordCilck = config.content.scrollButton.recordCilck;
+      //runTrack.addSheep(recordCilck.name, recordCilck.energy);
+      //console.log(target, target.name);
     });
   }
 
@@ -113,12 +125,11 @@ class Track{
 
     let trackBg = new Sprite(loader.resources['trackBg'].texture);
 
-    trackBg.scale.set(this.containerW / trackBg.width, this.containerH / trackBg.height);
+    trackBg.width = this.containerW;
+    trackBg.height = this.containerH;
 
     let mask = new Graphics();
-    mask.beginFill('0x000000').drawRect(0, 0, this.containerW, this.containerH).closePath();
-
-    that.container.mask = mask;
+    mask.beginFill('0x000000').drawRect(-15, 0, this.cutWidth, this.containerH).closePath();
 
     let tips = new Tips().init();
     tips.x = -4;
@@ -130,7 +141,9 @@ class Track{
     that.fingerCon.y = that.containerW / 2;
     that.fingerCon.alpha = 0;
 
-    that.container.addChild(mask, trackBg, tips, that.fingerCon);
+    that.container.addChild(mask, trackBg, tips/*, that.fingerCon*/);
+    that.container.mask = mask;
+
 
     setTimeout(() => {
       that.container.removeChild(tips);
