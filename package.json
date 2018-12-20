@@ -21,7 +21,7 @@
   "dependencies": {
     "lodash": "^4.17.11",
     "pixi-tween": "^0.2.0",
-    "pixi.js": "^4.8.3"
+    "pixi.js": "^4.8.4"
   },
   "devDependencies": {
     "@babel/core": "^7.2.0",
