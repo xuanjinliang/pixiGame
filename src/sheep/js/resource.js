@@ -33,6 +33,11 @@ import cry1 from "../images/cry1.png";
 import cry2 from "../images/cry2.png";
 import cryBg from "../images/cryBg.png";
 import energy from "../images/energy.png";
+import win from "../images/win.png";
+import failed from "../images/failed.png";
+import continueImg from "../images/continueImg.png";
+import download from "../images/download.png";
+import again from "../images/again.png";
 
 export default {
   mainfest: [
@@ -159,6 +164,26 @@ export default {
     {
       url: energy,
       name: "energy"
+    },
+    {
+      url: win,
+      name: "win"
+    },
+    {
+      url: failed,
+      name: "failed"
+    },
+    {
+      url: continueImg,
+      name: "continueImg"
+    },
+    {
+      url: download,
+      name: "download"
+    },
+    {
+      url: again,
+      name: "again"
     }
   ]
 };

@@ -15,12 +15,16 @@ import config from './config';
 import resource from './resource';
 import GameBg from './gameBg';
 import Content from "./content";
+import Success from "./success";
+import Fail from "./Fail";
 
 class Index {
   constructor(){
     this.loadComplete = false;
     this.container = null;
     this.gameBg = new GameBg();
+    this.success = new Success();
+    this.fail = new Fail();
     this.result = false;
   }
 
@@ -36,7 +40,7 @@ class Index {
 
     this.container.addChild(config.content.setContentRect());
 
-    config.stage.addChild(this.gameBg.setBg(), this.container, this.gameBg.setShade(config.stageW, config.stageH));
+    config.stage.addChild(this.gameBg.setBg(), this.container, this.gameBg.setShade(config.stageW, config.stageH), this.success.init(), this.fail.init());
   }
 
   handleFileLoad(){
@@ -82,11 +86,23 @@ class Index {
 
     this.gameBg.resizeBg();
     this.gameBg.resizeShade(config.stageW, config.stageH);
-    /*config.success.resize();
-    config.fail.resize();*/
+    this.success.resize();
+    //config.fail.resize();
   }
 
   stageBreakHandler() {
+    if(config.content && config.content.topBar && config.content.topBar.progressBar.remain <= 0){
+      this.gameBg.shade.visible = true;
+      this.success.container.visible = true;
+      this.result = true;
+    }
+
+    if(config.content && config.content.footBar && config.content.footBar.remain <= 0){
+      this.gameBg.shade.visible = true;
+      this.fail.container.visible = true;
+      this.result = true;
+    }
+
     if(!this.result){
       if(config.content && config.content.track){
         //更新赛道每只羊的运行

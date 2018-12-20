@@ -379,10 +379,6 @@ class EachTrack{
     //this.trackBArray[0].runFlash();
 
     this.container.hitArea = new Rectangle(0, 0, this.runTrack.width, this.runTrack.height);
-
-    /*setTimeout(() => {
-      config.content.footBar.setBarPool(40);
-    }, 1000);*/
     return this.container;
   }
 }

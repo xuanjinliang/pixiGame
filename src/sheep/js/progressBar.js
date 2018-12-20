@@ -2,6 +2,7 @@
  * Created by xuanjinliang on 2018/12/11.
  */
 
+import _ from 'lodash';
 import * as PIXI from 'pixi.js';
 import config from './config';
 
@@ -87,7 +88,7 @@ class ProgressBar {
 
   cutImage(targetW) {
     this.pBarTexture = PIXI.loader.resources['pBar'].texture;
-    let crop = new PIXI.Rectangle(this.pBarTexture.frame.x, this.pBarTexture.frame.y, (targetW || this.pBarTexture.frame.width), this.pBarTexture.frame.height);
+    let crop = new PIXI.Rectangle(this.pBarTexture.frame.x, this.pBarTexture.frame.y, (_.isNumber(targetW) ? targetW : this.pBarTexture.frame.width), this.pBarTexture.frame.height);
     return new PIXI.Texture(this.pBarTexture.baseTexture, crop, this.pBarTexture.frame, crop);
   }
 

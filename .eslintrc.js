@@ -12,6 +12,9 @@ module.exports = {
     "node": true,
     "es6": true,
   },
+  "globals": {
+    "FbPlayableAd": false
+  },
   extends: "eslint:recommended",
   // add your custom rules here
   rules: {

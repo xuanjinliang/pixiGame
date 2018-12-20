@@ -39,8 +39,8 @@ class Content{
     let mask = new PIXI.Graphics();
     mask.beginFill().drawRect(0, 0, this.containerW, this.containerH).closePath();
 
-    let shape = new PIXI.Graphics();
-    shape.beginFill('0x000000').drawRect(0, 0, this.containerW, this.containerH).closePath();
+    /*let shape = new PIXI.Graphics();
+    shape.beginFill('0x000000').drawRect(0, 0, this.containerW, this.containerH).closePath();*/
 
     let gbCon = this.setGuardBar();
     let scrollCon = this.scrollButton.setScrollCon();
@@ -71,8 +71,11 @@ class Content{
     this.container.width = this.containerW;
     this.container.height = this.containerH;
 
-    this.container.addChild(mask, shape, gbCon, scrollCon, topBarCon, trackCon, footBarCon, bSheepButton);
+    this.container.addChild(mask, gbCon, scrollCon, topBarCon, trackCon, footBarCon, bSheepButton);
     this.container.mask = mask;
+
+    /*this.footBar.setBarPool(40);
+    this.footBar.setBarPool(160);*/
 
     return this.container;
   }

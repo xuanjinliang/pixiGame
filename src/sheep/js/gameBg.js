@@ -14,15 +14,23 @@ class GameBg {
 
   resizeShade(w, h){
     if(this.shade){
-      this.shade.beginFill('#000').drawRect(0, 0, w, h).closePath();
+      this.shade.width = w;
+      this.shade.height = h;
     }
   }
 
   setShade(w, h){
     this.shade = new PIXI.Graphics();
     this.shade.alpha = 0.8;
-    this.resizeShade(w, h);
+    this.shade.beginFill('#000').drawRect(0, 0, w, h).closePath();
     this.shade.visible = false;
+
+    this.shade.interactive = true;
+    /*this.shade.on('tap', function(event){
+      console.log(event);
+      event.stopPropagation();
+      return false;
+    });*/
 
     return this.shade;
   }

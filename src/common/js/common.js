@@ -2,6 +2,7 @@
  * Created by xuanjinliang on 2018/12/11.
  */
 
+import _ from 'lodash';
 import {Spritesheet, loader} from "pixi.js";
 
 export function angleToRadians(degNum){
@@ -49,4 +50,15 @@ export function hitTestRectangle(r1, r2) {
   }
 
   return hit;
+}
+
+export function fbClick(fun) {
+  try{
+    FbPlayableAd.onCTAClick();
+  }catch (e) {
+    if(_.isFunction(fun)){
+      fun();
+    }
+    console.log(e);
+  }
 }
