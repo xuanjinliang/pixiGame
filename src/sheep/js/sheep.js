@@ -3,9 +3,7 @@
  */
 
 import {Container, loader, Sprite, extras, tween, tweenManager} from "pixi.js";
-import sheepJson from "../json/sheep";
-import sleepJson from "../json/sleep";
-import {loadSheet} from "common";
+import config from './config';
 
 class Sheep{
   constructor(width, height, energy) {
@@ -23,7 +21,9 @@ class Sheep{
     this.totalEnergy = energy || 0; //用户记录总的能量值
     this.smiling = null;
     this.sleepCon = null;
-    this.sheepSheet = null;
+    this.sheepSheet = config.sheet.sheep;
+    this.sleepSheet = config.sheet.sleep;
+    this.scaleAnim = null;
   }
 
   sheepResize() {
@@ -44,36 +44,55 @@ class Sheep{
   }
 
   runFlash() {
-    let that = this;
-    loadSheet('sheep', sheepJson).then((result) => {
-      let index = that.sheepContainer.getChildIndex(that.sheepAnimate);
-      that.sheepContainer.removeChild(that.sheepAnimate);
+    if(this.scaleAnim){
+      this.scaleAnim.reset();
+      this.scaleAnim.remove();
+    }
 
-      let sheepAnimate = new extras.AnimatedSprite(result.animations[that.sheepAnimate.name]);
-      sheepAnimate.name = that.sheepAnimate.name;
+    if(!this.sheepAnimate.playing){
+      let index = this.sheepContainer.getChildIndex(this.sheepAnimate);
+      this.sheepContainer.removeChild(this.sheepAnimate);
 
-      that.sheepAnimate = sheepAnimate;
-      that.sheepResize();
+      let sheepAnimate = new extras.AnimatedSprite(this.sheepSheet.animations[this.sheepAnimate.name]);
+      sheepAnimate.name = this.sheepAnimate.name;
+
+      this.sheepAnimate = sheepAnimate;
+      this.sheepResize();
       sheepAnimate.loop = true;
       sheepAnimate.animationSpeed = 0.1;
       sheepAnimate.play();
 
-      that.sheepContainer.addChildAt(sheepAnimate, index);
-    });
+      this.sheepContainer.addChildAt(sheepAnimate, index);
+    }
+
+  }
+
+  sheepScale() {
+    let that = this;
+    let scaleAnim = tweenManager.createTween(that.sheepAnimate);
+    scaleAnim.loop = true;
+    scaleAnim.pingPong = true;
+    scaleAnim.time = 500;
+    scaleAnim.easing = tween.Easing.linear();
+    scaleAnim.from({
+      scale: {x: that.sheepAnimate.scale.x, y: that.sheepAnimate.scale.y}
+    }).to({
+      scale: {x: that.sheepAnimate.scale.x * 0.8, y: that.sheepAnimate.scale.y * 0.8}
+    }).start();
+
+    that.scaleAnim = scaleAnim;
   }
 
   sleep() {
-    return loadSheet('sleep', sleepJson).then((result) => {
-      let sleepAnimate = new extras.AnimatedSprite(result.animations.sleep);
-      sleepAnimate.scale.set(0.6);
+    let sleepAnimate = new extras.AnimatedSprite(this.sleepSheet.animations.sleep);
+    sleepAnimate.scale.set(0.6);
 
-      sleepAnimate.loop = true;
-      sleepAnimate.animationSpeed = 0.1;
-      sleepAnimate.play();
-      sleepAnimate.visible = false;
+    sleepAnimate.loop = true;
+    sleepAnimate.animationSpeed = 0.1;
+    sleepAnimate.play();
+    sleepAnimate.visible = false;
 
-      return sleepAnimate;
-    });
+    return sleepAnimate;
   }
 
   smillingAnim() {
@@ -96,7 +115,7 @@ class Sheep{
       scale: {x: 0.8, y: 0.8}
     }).start();
 
-    setTimeout(function(){
+    setTimeout(() => {
       that.smiling.visible = false;
       smilingAnim.reset();
       smilingAnim.remove();
@@ -138,38 +157,42 @@ class Sheep{
     return container;
   }
 
-  init(str) {
+  setSheep(str) {
     let that = this;
-    loadSheet('sheep', sheepJson).then((result) => {
-      that.sheepSheet = result;
+    that.sheepAnimate = new Sprite(this.sheepSheet.textures[`${str}.png`]);
+    that.sheepAnimate.name = str;
+    that.sheepResize();
 
-      that.sheepAnimate = new Sprite(that.sheepSheet.textures[`${str}.png`]);
-      that.sheepAnimate.name = str;
-      that.sheepResize();
+    that.sheepContainer.x = that.trackW / 2;
 
-      that.sheepContainer.x = that.trackW / 2;
+    if(str.indexOf('b') > -1){
+      that.direction = 'down';
+      that.sheepContainer.y = that.sheepAnimate.height / 2;
+      that.smiling = this.showSmiling();
+    }else{
+      that.direction = 'up';
+      that.sheepContainer.y = that.trackH - that.sheepAnimate.height / 2;
+      that.smiling = this.showSmiling(1);
+    }
+    that.sheepMinHeight += that.sheepAnimate.height / 2;
+    that.sheepMaxHeight -= that.sheepAnimate.height / 2;
 
-      if(str.indexOf('b') > -1){
-        that.direction = 'down';
-        that.sheepContainer.y = that.sheepAnimate.height / 2;
-        that.smiling = this.showSmiling();
-      }else{
-        that.direction = 'up';
-        that.sheepContainer.y = that.trackH - that.sheepAnimate.height / 2;
-        that.smiling = this.showSmiling(1);
-      }
+    that.sheepContainer.addChild(that.sheepAnimate, that.smiling);
 
-      that.sheepContainer.addChild(that.sheepAnimate, that.smiling);
+    that.sheepContainer.width = that.sheepAnimate.width;
+    that.sheepContainer.height = that.sheepAnimate.height;
 
-      that.sleep().then((result) => {
-        that.sleepCon = result;
-        that.sheepContainer.addChild(result);
-        that.sleepCon.x = that.sleepCon.width / 2 + 6;
-        that.sleepCon.y = -that.sleepCon.height / 2 - 10;
-      });
-    });
+    that.sleepCon = that.sleep();
+    that.sheepContainer.addChild(that.sleepCon);
+    that.sleepCon.x = that.sleepCon.width / 2 + 6;
+    that.sleepCon.y = -that.sleepCon.height / 2 - 10;
 
-    return that.sheepContainer;
+    that.sheepScale();
+  }
+
+  init(str) {
+    this.setSheep(str);
+    return this.sheepContainer;
   }
 }
 

@@ -35,7 +35,8 @@ module.exports = {
     extensions: [".js", ".json"],
     alias: {
       '@': resolve('src'),
-      'common': resolve('src/common/js/common.js')
+      'common': resolve('src/common/js/common.js'),
+      'random': resolve('src/common/js/random.js')
     }
   },
   module: {

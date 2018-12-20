@@ -5,7 +5,6 @@
 import _ from 'lodash';
 import * as PIXI from 'pixi.js';
 import config from './config';
-import loadJson from '../json/load.json';
 
 class ScrollButton {
 
@@ -110,22 +109,14 @@ class ScrollButton {
   }
 
   setLoadAnim() {
-    return new Promise((resolve) => {
-      let loadSheet = new PIXI.Spritesheet(PIXI.loader.resources['load'].texture.baseTexture, loadJson);
+    let loadW = this.scrollContainerH / 3,
+      loadSheet = config.sheet.load,
+      textures = Object.keys(loadSheet.textures).map((t) => loadSheet.textures[t]),
+      loadAnimate = new PIXI.extras.AnimatedSprite(textures);
 
-      let loadW = this.scrollContainerH / 3;
+    loadAnimate.scale.set(loadW / loadAnimate.width, loadW / loadAnimate.height);
 
-      loadSheet.parse(() => {
-        let textures = Object.keys(loadSheet.textures).map((t) => loadSheet.textures[t]);
-
-        let loadAnimate = new PIXI.extras.AnimatedSprite(textures);
-        loadAnimate.scale.set(loadW / loadAnimate.width, loadW / loadAnimate.height);
-
-        loadAnimate.loop = false;
-
-        resolve(loadAnimate);
-      });
-    });
+    this.loadAnimate = loadAnimate;
   }
 
   buttonLoad(button) {
@@ -197,11 +188,8 @@ class ScrollButton {
       that.scrollContainer.addChild(o.con);
     });
 
-    that.setLoadAnim().then((result) => {
-      that.loadAnimate = result;
-      that.buttonLoad(that.wSheepArray[that.wSheepArray.length - 1]);
-    });
-
+    that.setLoadAnim();
+    that.buttonLoad(that.wSheepArray[that.wSheepArray.length - 1]);
 
     return that.scrollContainer;
   }

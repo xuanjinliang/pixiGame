@@ -15,6 +15,7 @@ import pBar from "../images/pBar.png";
 import bSheep1 from "../images/bSheep1.png";
 import bSheep2 from "../images/bSheep2.png";
 import bSheep3 from "../images/bSheep3.png";
+import bSheepBg from "../images/bSheepBg.png";
 import trackBg from "../images/trackBg.png";
 import tipsBg from "../images/tipsBg.png";
 import clickTips from "../images/clickTips.png";
@@ -27,6 +28,11 @@ import smiling1 from "../images/smiling1.png";
 import smiling2 from "../images/smiling2.png";
 import smilingBg from "../images/smilingBg.png";
 import sleep from "../images/sleep.png";
+import noSpace from "../images/noSpace.png";
+import cry1 from "../images/cry1.png";
+import cry2 from "../images/cry2.png";
+import cryBg from "../images/cryBg.png";
+import energy from "../images/energy.png";
 
 export default {
   mainfest: [
@@ -83,6 +89,10 @@ export default {
       name: "bSheep3"
     },
     {
+      url: bSheepBg,
+      name: "bSheepBg"
+    },
+    {
       url: trackBg,
       name: "trackBg"
     },
@@ -129,6 +139,26 @@ export default {
     {
       url: sleep,
       name: "sleep"
+    },
+    {
+      url: noSpace,
+      name: "noSpace"
+    },
+    {
+      url: cry1,
+      name: "cry1"
+    },
+    {
+      url: cry2,
+      name: "cry2"
+    },
+    {
+      url: cryBg,
+      name: "cryBg"
+    },
+    {
+      url: energy,
+      name: "energy"
     }
   ]
 };

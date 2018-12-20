@@ -3,12 +3,9 @@
  */
 
 import * as PIXI from 'pixi.js';
-import progressBarJson from "../json/progressBar";
-import {loadSheet} from "common";
+import config from './config';
 
-let progressBarSheet = null;
-
-class ProgressBar{
+class ProgressBar {
   constructor() {
     this.container = new PIXI.Container();
     this.containerW = 314;
@@ -20,41 +17,30 @@ class ProgressBar{
     this.totalBar = 200;
     this.remain = 200;
     this.runBool = false;
+    this.pBarTexture = null;
+    this.progressBarSheet = config.sheet.progressBar;
   }
 
-  setProgressBar(){
-    let progressBarAnimate = new PIXI.Sprite(progressBarSheet.textures['progressBar3.png']);
-    progressBarAnimate.scale.set(this.containerW / progressBarAnimate.width, this.containerH / progressBarAnimate.height);
-
-    return progressBarAnimate;
-  }
-
-  loadProgressBarSheet() {
-    let that = this;
-    return loadSheet('progressBar', progressBarJson).then((result) => {
-      progressBarSheet = result;
-      return that.setProgressBar();
-    });
+  setProgressBar() {
+    this.progressBarAnimate = new PIXI.Sprite(this.progressBarSheet.textures['progressBar3.png']);
+    this.progressBarAnimate.scale.set(this.containerW / this.progressBarAnimate.width, this.containerH / this.progressBarAnimate.height);
+    this.container.addChildAt(this.progressBarAnimate, 0);
   }
 
   setProgressBarSprite() {
-    let that = this;
+    this.container.removeChild(this.progressBarAnimate);
+    this.progressBarAnimate = new PIXI.extras.AnimatedSprite(this.progressBarSheet.animations.progressBar);
+    this.progressBarAnimate.scale.set(this.containerW / this.progressBarAnimate.width, this.containerH / this.progressBarAnimate.height);
 
-    this.container.removeChild(that.progressBarAnimate);
-
-    that.progressBarAnimate = new PIXI.extras.AnimatedSprite(progressBarSheet.animations.progressBar);
-    that.progressBarAnimate.scale.set(that.containerW / that.progressBarAnimate.width, that.containerH / that.progressBarAnimate.height);
-
-    that.progressBarAnimate.loop = true;
-    that.progressBarAnimate.animationSpeed = 0.2;
-    that.progressBarAnimate.play();
-
-    this.container.addChildAt(that.progressBarAnimate, 0);
+    this.progressBarAnimate.loop = true;
+    this.progressBarAnimate.animationSpeed = 0.2;
+    this.progressBarAnimate.play();
+    this.container.addChildAt(this.progressBarAnimate, 0);
   }
 
   setBarAnim() {
     let that = this;
-    if(that.runBool || that.remain <= 0 || that.remainPool.length <= 0){
+    if (that.runBool || that.remain <= 0 || that.remainPool.length <= 0) {
       return;
     }
 
@@ -63,7 +49,7 @@ class ProgressBar{
 
     that.remain -= n;
 
-    if(that.remain <= 0){
+    if (that.remain <= 0) {
       that.remain = 0;
       that.remainPool = [];
     }
@@ -79,16 +65,16 @@ class ProgressBar{
     tween.easing = PIXI.tween.Easing.linear();
     tween.loop = false;
     tween.pingPong = false;
-    tween.from({frameWidth: pBarTexture.width}).to({frameWidth: targetW}).on('end', function(){
+    tween.from({frameWidth: pBarTexture.frame.width}).to({frameWidth: targetW}).on('end', function(){
       that.runBool = false;
       if(that.remainPool.length > 0){
         that.setBarAnim();
       }
     }).on('update', function(){
-      that.pBar.texture.frame = new PIXI.Rectangle(0, 0, that.pBar.frameWidth, that.pBar.texture.height);
+      that.pBar.texture = that.cutImage(that.pBar.frameWidth);
     }).start();
 
-    if(that.remain <= 40 && this.progressBarAnimate.playing != true){
+    if (that.remain <= 40 && this.progressBarAnimate.playing != true) {
       this.setProgressBarSprite();
     }
 
@@ -99,38 +85,37 @@ class ProgressBar{
     this.setBarAnim();
   }
 
-  init() {
-    let that = this;
-    this.loadProgressBarSheet().then((result) => {
-      that.progressBarAnimate = result;
-      this.container.addChildAt(this.progressBarAnimate, 0);
-    });
+  cutImage(targetW) {
+    this.pBarTexture = PIXI.loader.resources['pBar'].texture;
+    let crop = new PIXI.Rectangle(this.pBarTexture.frame.x, this.pBarTexture.frame.y, (targetW || this.pBarTexture.frame.width), this.pBarTexture.frame.height);
+    return new PIXI.Texture(this.pBarTexture.baseTexture, crop, this.pBarTexture.frame, crop);
+  }
 
-    let pBar = new PIXI.Sprite(
-      PIXI.loader.resources['pBar'].texture
-    ),
-      pBarW = 295,
+  init() {
+    this.setProgressBar();
+
+    this.pBar = new PIXI.Sprite(this.cutImage());
+
+    let pBarW = 295,
       pBarH = 24,
       borderWidth = 9,
       borderHeight = 6;
 
-    pBar.x = borderWidth;
-    pBar.y = borderHeight;
-    pBar.scale.set(pBarW / pBar.width, pBarH / pBar.height);
+    this.pBar.x = borderWidth;
+    this.pBar.y = borderHeight;
+    this.pBar.scale.set(pBarW / this.pBar.width, pBarH / this.pBar.height);
 
-    that.pBar = pBar;
-
-    that.fontText = new PIXI.Text(`${that.remain} / ${that.totalBar}`, {
+    this.fontText = new PIXI.Text(`${this.remain} / ${this.totalBar}`, {
       fontFamily: 'Arial',
       fontSize: '24px',
       fontWeight: 'bold',
       fill: '#ffffff'
     });
 
-    that.fontText.x = (that.containerW - that.fontText.width) / 2;
-    that.fontText.y = (that.containerH - that.fontText.height) / 2 - 3;
+    this.fontText.x = (this.containerW - this.fontText.width) / 2;
+    this.fontText.y = (this.containerH - this.fontText.height) / 2 - 3;
 
-    this.container.addChild(pBar, that.fontText);
+    this.container.addChild(this.pBar, this.fontText);
 
     return this.container;
   }

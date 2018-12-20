@@ -8,6 +8,7 @@ import ScrollButton from './ScrollButton';
 import TopBar from './topBar';
 import Track from './track';
 import ProgressBar from './progressBar';
+import BSheepButton from './BSheepButton';
 
 class Content{
   constructor() {
@@ -19,6 +20,7 @@ class Content{
     this.topBar = new TopBar();
     this.track = new Track();
     this.footBar = new ProgressBar();
+    this.bSheepButton = new BSheepButton();
   }
 
   setGuardBar() {
@@ -59,13 +61,17 @@ class Content{
     footBarCon.x = 54;
     footBarCon.y = this.topBar.containerH + this.track.containerH;
 
+    let bSheepButton = this.bSheepButton.init();
+    bSheepButton.x = 12;
+    bSheepButton.y = 100;
+
     this.container.x = 0;
     this.container.y = 24;
 
     this.container.width = this.containerW;
     this.container.height = this.containerH;
 
-    this.container.addChild(mask, shape, gbCon, scrollCon, topBarCon, trackCon, footBarCon);
+    this.container.addChild(mask, shape, gbCon, scrollCon, topBarCon, trackCon, footBarCon, bSheepButton);
     this.container.mask = mask;
 
     return this.container;

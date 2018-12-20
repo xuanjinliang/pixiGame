@@ -5,7 +5,12 @@
 import * as PIXI from 'pixi.js';
 import 'pixi-tween';
 import '../../common/style/common.less';
+import loadJson from '../json/load.json';
+import progressBarJson from "../json/progressBar.json";
+import sheepJson from "../json/sheep.json";
+import sleepJson from "../json/sleep.json";
 
+import {loadSheet} from 'common';
 import config from './config';
 import resource from './resource';
 import GameBg from './gameBg';
@@ -16,6 +21,7 @@ class Index {
     this.loadComplete = false;
     this.container = null;
     this.gameBg = new GameBg();
+    this.result = false;
   }
 
   setContainer(){
@@ -35,6 +41,7 @@ class Index {
 
   handleFileLoad(){
     let that = this;
+    //先加载所有图片
     PIXI.loader.add(resource.mainfest)
       /*.on("progress", (loader, resource) => {
         console.log(resource);
@@ -42,7 +49,18 @@ class Index {
       })*/
       .load(() => {
         //console.log(loader, resources);
-        that.loadLoadingComplete();
+        //再加载当前游戏所需要的雪碧json
+        Promise.all([
+          loadSheet('load', loadJson),
+          loadSheet('progressBar', progressBarJson),
+          loadSheet('sheep', sheepJson),
+          loadSheet('sleep', sleepJson)
+        ]).then((result) => {
+          result.forEach((o) => {
+            config.sheet[o.name] = o;
+          });
+          that.loadLoadingComplete();
+        });
       });
   }
 
@@ -69,6 +87,16 @@ class Index {
   }
 
   stageBreakHandler() {
+    if(!this.result){
+      if(config.content && config.content.track){
+        //更新赛道每只羊的运行
+        config.content.track.runEachTrack.call(config.content.track);
+      }
+    }else if(config.content.track.addBsheepTimeout){
+      clearTimeout(config.content.track.addBsheepTimeout);
+      config.content.track.addBsheepTimeout = null;
+    }
+
     PIXI.tweenManager.update();
   }
 
@@ -99,17 +127,12 @@ class Index {
       backgroundColor: "0x82c845"
     });
     config.app.renderer.autoResize = true;
+    //config.app.renderer.plugins.interaction.autoPreventDefault = false;
     config.stage = config.app.stage;
 
     document.querySelector('#main').appendChild(config.app.view);
     this.resizeCanvas();
     this.handleFileLoad();
-
-    /*config.stage.interactive = true;
-    config.stage.buttonMode = true;
-    config.stage.on('click', function(event){
-      console.log(321, event);
-    });*/
 
     config.app.ticker.add(this.stageBreakHandler.bind(this));
   }

@@ -9,6 +9,7 @@ const defaultW = 750,
 
 export default {
   images: {},
+  sheet: {},
   app: null,
   canvas: null,
   canvasW: 0,
