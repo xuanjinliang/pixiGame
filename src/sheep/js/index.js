@@ -87,7 +87,7 @@ class Index {
     this.gameBg.resizeBg();
     this.gameBg.resizeShade(config.stageW, config.stageH);
     this.success.resize();
-    //config.fail.resize();
+    this.fail.resize();
   }
 
   stageBreakHandler() {
@@ -143,7 +143,6 @@ class Index {
       backgroundColor: "0x82c845"
     });
     config.app.renderer.autoResize = true;
-    //config.app.renderer.plugins.interaction.autoPreventDefault = false;
     config.stage = config.app.stage;
 
     document.querySelector('#main').appendChild(config.app.view);
