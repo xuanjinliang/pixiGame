@@ -105,13 +105,13 @@ class Index {
   }
 
   stageBreakHandler() {
-    if(config.content && config.content.topBar && config.content.topBar.progressBar.remain <= 0){
+    if(!this.result && config.content && config.content.topBar && config.content.topBar.progressBar.remain <= 0){
       this.gameBg.shade.visible = true;
       this.success.container.visible = true;
       this.result = true;
     }
 
-    if(config.content && config.content.footBar && config.content.footBar.remain <= 0){
+    if(!this.result && config.content && config.content.footBar && config.content.footBar.remain <= 0){
       this.gameBg.shade.visible = true;
       this.fail.container.visible = true;
       this.result = true;
