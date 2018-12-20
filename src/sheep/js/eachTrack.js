@@ -239,6 +239,7 @@ class EachTrack{
 
     //console.log('removeBool-->', removeBool);
     if(removeBool){
+      o.delete = true;
       that.container.removeChild(o.sheepContainer);
       return o;
     }
@@ -282,8 +283,10 @@ class EachTrack{
         }else{
           let arriveSheep = that.runDirection(o, newWArray);
           if(arriveSheep.bound){
-            that.showSmile(that.trackWArray, index);
-            that.addCryFace(1);
+            if(o.energy != 0){
+              that.showSmile(that.trackWArray, index);
+              that.addCryFace(1);
+            }
             if(o.energy > 0 && config.content.topBar){
               config.content.topBar.progressBar.setBarPool(o.energy);
             }
@@ -325,14 +328,15 @@ class EachTrack{
           that.energyContainer.visible = false;
         }
 
-
         if(o.hit && that.firstBSheep.hit && that.firstWSheep && that.firstWSheep.totalEnergy >= that.firstBSheep.totalEnergy){
           that.runDirection(o, newBArray);
         }else{
           let arriveSheep = that.runDirection(o, newBArray, 1);
           if(arriveSheep.bound){
-            that.showSmile(that.trackBArray, index);
-            that.addCryFace(0);
+            if(o.energy != 0){
+              that.showSmile(that.trackBArray, index);
+              that.addCryFace(0);
+            }
             if(o.energy > 0 && config.content.footBar){
               config.content.footBar.setBarPool(o.energy);
             }
@@ -344,6 +348,14 @@ class EachTrack{
     }
 
     that.trackBArray = newBArray;
+
+    if(that.firstWSheep && that.firstWSheep.delete){
+      that.firstWSheep.totalEnergy = 0;
+    }
+
+    if(that.firstBSheep && that.firstBSheep.delete){
+      that.firstBSheep.totalEnergy = 0;
+    }
   }
 
   init() {

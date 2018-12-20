@@ -11,8 +11,6 @@ class Sheep{
     this.sheepW = width;
     this.trackW = width;
     this.trackH = height;
-    this.shapeW = 0;
-    this.shapeH = 0;
     this.sheepAnimate = null;
     this.sheepMinHeight = 0;
     this.sheepMaxHeight = this.trackH;
@@ -24,6 +22,7 @@ class Sheep{
     this.sheepSheet = config.sheet.sheep;
     this.sleepSheet = config.sheet.sleep;
     this.scaleAnim = null;
+    this.delete = false;
   }
 
   sheepResize() {
@@ -72,7 +71,7 @@ class Sheep{
     let scaleAnim = tweenManager.createTween(that.sheepAnimate);
     scaleAnim.loop = true;
     scaleAnim.pingPong = true;
-    scaleAnim.time = 500;
+    scaleAnim.time = 600;
     scaleAnim.easing = tween.Easing.linear();
     scaleAnim.from({
       scale: {x: that.sheepAnimate.scale.x, y: that.sheepAnimate.scale.y}

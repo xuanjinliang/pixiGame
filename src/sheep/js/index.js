@@ -38,9 +38,17 @@ class Index {
 
     config.content = new Content();
 
-    this.container.addChild(config.content.setContentRect());
+    this.container.addChild(config.content.setContentRect(), this.gameBg.setDownload());
 
     config.stage.addChild(this.gameBg.setBg(), this.container, this.gameBg.setShade(config.stageW, config.stageH), this.success.init(), this.fail.init());
+  }
+
+  removeGame(){
+    this.result = false;
+    this.container.removeChildren(0);
+    config.stage.removeChildren(0);
+    //config.content.destroy();
+    //createjs.Ticker.reset();
   }
 
   handleFileLoad(){
@@ -71,6 +79,12 @@ class Index {
   loadLoadingComplete() {
     this.loadComplete = true;
     this.setContainer();
+
+    this.success.tryFun = this.fail.tryFun = () => {
+      this.removeGame();
+      this.setContainer();
+      //createjsSet();
+    };
   }
 
   setContainerLocation() {

@@ -4,6 +4,7 @@
 
 import * as PIXI from 'pixi.js';
 import config from './config';
+import {fbClick} from "common";
 
 class GameBg {
   constructor() {
@@ -55,6 +56,36 @@ class GameBg {
     container.addChild(this.bg2, bg1);
 
     return container;
+  }
+
+  setDownload() {
+    this.download = new PIXI.Sprite(PIXI.loader.resources['download'].texture);
+    let minRatio = 0.4,
+      maxRatio = 0.5;
+
+    this.download.pivot.set(this.download.width / 2, 0);
+    this.download.scale.set(maxRatio);
+
+    this.download.x = config.containerW / 2;
+    this.download.y = config.containerH - this.download.height - 5;
+
+    let downloadTween = PIXI.tweenManager.createTween(this.download);
+    downloadTween.loop = true;
+    downloadTween.pingPong = true;
+    downloadTween.time = 600;
+    downloadTween.easing = PIXI.tween.Easing.linear();
+    downloadTween.from({
+      scale: {x: maxRatio, y: maxRatio}
+    }).to({
+      scale: {x: minRatio, y: minRatio}
+    }).start();
+
+    this.download.interactive = true;
+    this.download.on('tap', function(){
+      fbClick();
+    });
+
+    return this.download;
   }
 
 }
