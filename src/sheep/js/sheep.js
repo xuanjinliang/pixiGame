@@ -42,6 +42,20 @@ class Sheep{
     that.sheepAnimate.scale.set(scale);
   }
 
+  getSheepRectangle() {
+    let minWidth = this.sheepContainer.minWidth,
+      minHeight = this.sheepContainer.minHeight,
+      width = this.sheepContainer.width,
+      height = this.sheepContainer.height;
+
+    return {
+      x: this.sheepContainer.x,
+      y: this.sheepContainer.y,
+      width: minWidth > width ? minWidth : width,
+      height: minHeight > height ? minHeight : height
+    };
+  }
+
   runFlash() {
     if(this.scaleAnim){
       this.scaleAnim.reset();
@@ -78,6 +92,9 @@ class Sheep{
     }).to({
       scale: {x: that.sheepAnimate.scale.x * 0.8, y: that.sheepAnimate.scale.y * 0.8}
     }).start();
+    /*.on('update', () => {
+      console.log('width-->', that.sheepContainer.width, that.getSheepRectangle().width);
+    })*/
 
     that.scaleAnim = scaleAnim;
   }
@@ -178,8 +195,9 @@ class Sheep{
 
     that.sheepContainer.addChild(that.sheepAnimate, that.smiling);
 
-    that.sheepContainer.width = that.sheepAnimate.width;
-    that.sheepContainer.height = that.sheepAnimate.height;
+    //that.sheepContainer.hitArea = new Rectangle(0, 0, that.sheepAnimate.width, that.sheepAnimate.height);
+    that.sheepContainer.minWidth = that.sheepAnimate.width;
+    that.sheepContainer.minHeight = that.sheepAnimate.height;
 
     that.sleepCon = that.sleep();
     that.sheepContainer.addChild(that.sleepCon);

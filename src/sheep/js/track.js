@@ -52,7 +52,7 @@ class Track{
     for (let i = 0, l = array.length; i < l; i++){
       let sheep = array[i],
         y = sheep.sheepContainer.y,
-        limitY = maxSheepSpace.height + sheep.sheepContainer.height / 2;
+        limitY = maxSheepSpace.height + sheep.getSheepRectangle().height / 2;
 
       if(y < limitY){
         return false;
@@ -113,7 +113,7 @@ class Track{
     for (let i = 0, l = array.length; i < l; i++){
       sheep = array[i];
       let y = sheep.sheepContainer.y,
-        limitY = this.containerH - (maxSheepSpace.height + sheep.sheepContainer.height / 2);
+        limitY = this.containerH - (maxSheepSpace.height + sheep.getSheepRectangle().height / 2);
 
       if(y > limitY){
         if(bool){

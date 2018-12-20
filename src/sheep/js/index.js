@@ -45,6 +45,9 @@ class Index {
 
   removeGame(){
     this.result = false;
+    this.gameBg = new GameBg();
+    this.success = new Success();
+    this.fail = new Fail();
     this.container.removeChildren(0);
     config.stage.removeChildren(0);
     //config.content.destroy();

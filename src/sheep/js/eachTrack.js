@@ -96,8 +96,8 @@ class EachTrack{
 
   getSheepBounds(name, energy) {
     let sheep = new Sheep(this.containerW, this.containerH, energy);
-    let con = sheep.init(name);
-    return con;
+    sheep.init(name);
+    return sheep.getSheepRectangle();
   }
 
   removeSheep() {
@@ -202,13 +202,8 @@ class EachTrack{
         preEle = array[len - 2];
 
       if(nowEle.hit == false){
-        let //height = nowEle.sheepContainer.height,
-          nowSheep = nowEle.sheepContainer,
+        let nowSheep = nowEle.sheepContainer,
           target = preEle.sheepContainer;
-
-
-        /*let regY = bool ? height : -height;
-        let hit = nowSheep.toLocal(new Point(0, regY), target);*/
 
         if(hitTestRectangle(nowSheep, target)){
           nowEle.hit = true;
@@ -234,8 +229,8 @@ class EachTrack{
 
     o.sheepContainer.y += (bool ? that.distance : - that.distance);
 
-    let removeBool = bool ? (o.sheepContainer.height + o.sheepMaxHeight <= o.sheepContainer.y) :
-      (o.sheepContainer.y + o.sheepContainer.height / 2 < 0);
+    let removeBool = bool ? (o.getSheepRectangle().height + o.sheepMaxHeight <= o.sheepContainer.y) :
+      (o.sheepContainer.y + o.getSheepRectangle().height / 2 < 0);
 
     //console.log('removeBool-->', removeBool);
     if(removeBool){
@@ -252,6 +247,12 @@ class EachTrack{
     let that = this,
       newBArray = [],
       newWArray = [];
+
+    /*if(that.firstWSheep && that.firstWSheep.hit){
+      console.log('firstWSheep-->', that.firstWSheep.sheepContainer);
+      console.log('firstBSheep-->', that.firstBSheep.sheepContainer);
+      return;
+    }*/
 
     //白羊
     that.firstWSheep = null;
@@ -270,7 +271,7 @@ class EachTrack{
 
         //碰撞后显示进度条
         if(that.firstWSheep.hit && that.firstBSheep){
-          that.energyContainer.y = that.firstWSheep.sheepContainer.y - (that.energyContainer.height + that.firstWSheep.sheepContainer.height) / 2;
+          that.energyContainer.y = that.firstWSheep.sheepContainer.y - (that.energyContainer.height + that.firstWSheep.getSheepRectangle().height) / 2;
           that.energyContainer.visible = true;
           that.setEnergyText(that.firstBSheep.totalEnergy);
           that.setEnergyText(that.firstWSheep.totalEnergy, 1);
@@ -382,13 +383,16 @@ class EachTrack{
     this.container.addChild(this.runTrack, this.showEnergy());
     this.container.interactive = true;
 
-    /*this.addSheep('b2', 60);
-    this.addSheep('w2', 60);*/
+    //this.addSheep('b1', 20);
+    //this.addSheep('w3', 60);
     //this.setEnergyText(20);
     //this.setEnergyText(40, 1);
-
-    //this.trackWArray[0].runFlash();
-    //this.trackBArray[0].runFlash();
+    /*this.trackWArray[0].runFlash();
+    this.trackBArray[0].runFlash();*/
+    /*let that = this;
+    setTimeout(() => {
+      that.addSheep('w2', 40);
+    }, 2000);*/
 
     this.container.hitArea = new Rectangle(0, 0, this.runTrack.width, this.runTrack.height);
     return this.container;

@@ -5,6 +5,16 @@
 import _ from 'lodash';
 import {Spritesheet, loader} from "pixi.js";
 
+function compareWH(o, bool){
+  let array = bool ? ['minWidth', 'width'] : ['minHeight', 'height'];
+
+  if(_.isNumber(o[array[0]]) && o[array[0]] > o[array[1]]){
+    return o[array[0]];
+  }
+
+  return o[array[1]];
+}
+
 export function angleToRadians(degNum){
   return Math.PI / 180 * degNum;
 }
@@ -29,15 +39,20 @@ export function hitTestRectangle(r1, r2) {
   let hit = false,
     combinedHalfWidths, combinedHalfHeights, vx, vy;
 
-  r1.centerX = r1.x + r1.width / 2;
-  r1.centerY = r1.y + r1.height / 2;
-  r2.centerX = r2.x + r2.width / 2;
-  r2.centerY = r2.y + r2.height / 2;
+  let r1Width = compareWH(r1, 1),
+    r1Height = compareWH(r1),
+    r2Width = compareWH(r2, 1),
+    r2Height = compareWH(r2);
 
-  r1.halfWidth = r1.width / 2;
-  r1.halfHeight = r1.height / 2;
-  r2.halfWidth = r2.width / 2;
-  r2.halfHeight = r2.height / 2;
+  r1.centerX = r1.x + r1Width / 2;
+  r1.centerY = r1.y + r1Height / 2;
+  r2.centerX = r2.x + r2Width / 2;
+  r2.centerY = r2.y + r2Height / 2;
+
+  r1.halfWidth = r1Width / 2;
+  r1.halfHeight = r1Height / 2;
+  r2.halfWidth = r2Width / 2;
+  r2.halfHeight = r2Height / 2;
 
   vx = r1.centerX - r2.centerX;
   vy = r1.centerY - r2.centerY;
@@ -45,7 +60,7 @@ export function hitTestRectangle(r1, r2) {
   combinedHalfWidths = r1.halfWidth + r2.halfWidth;
   combinedHalfHeights = r1.halfHeight + r2.halfHeight;
 
-  if (Math.abs(vx) < combinedHalfWidths && Math.abs(vy) < combinedHalfHeights) {
+  if (Math.abs(vx) <= combinedHalfWidths && Math.abs(vy) <= combinedHalfHeights) {
     hit = true;
   }
 
