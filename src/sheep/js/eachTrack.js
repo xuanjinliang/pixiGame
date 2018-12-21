@@ -139,7 +139,7 @@ class EachTrack{
       that.container.removeChild(that[str]);
     }
 
-    that.container.addChildAt(that[str], that.container.getChildIndex(that.runTrack) - 1);
+    that.container.addChildAt(that[str], that.container.getChildIndex(that.runTrack));
 
     that[time] = setTimeout(() => {
       that.container.removeChild(that[str]);
@@ -350,13 +350,13 @@ class EachTrack{
 
     that.trackBArray = newBArray;
 
-    if(that.firstWSheep && that.firstWSheep.delete){
+    /*if(that.firstWSheep && that.firstWSheep.delete){
       that.firstWSheep.totalEnergy = 0;
     }
 
     if(that.firstBSheep && that.firstBSheep.delete){
       that.firstBSheep.totalEnergy = 0;
-    }
+    }*/
   }
 
   init() {
@@ -383,15 +383,16 @@ class EachTrack{
     this.container.addChild(this.runTrack, this.showEnergy());
     this.container.interactive = true;
 
-    //this.addSheep('b1', 20);
-    //this.addSheep('w3', 60);
+    //this.addSheep('b3', 40);
+    //this.addSheep('w1', 60);
+
     //this.setEnergyText(20);
     //this.setEnergyText(40, 1);
     /*this.trackWArray[0].runFlash();
     this.trackBArray[0].runFlash();*/
     /*let that = this;
     setTimeout(() => {
-      that.addSheep('w2', 40);
+      that.addSheep('b2', 40);
     }, 2000);*/
 
     this.container.hitArea = new Rectangle(0, 0, this.runTrack.width, this.runTrack.height);

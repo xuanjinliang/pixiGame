@@ -175,6 +175,7 @@ class Sheep{
 
   setSheep(str) {
     let that = this;
+
     that.sheepAnimate = new Sprite(this.sheepSheet.textures[`${str}.png`]);
     that.sheepAnimate.name = str;
     that.sheepResize();
@@ -193,6 +194,11 @@ class Sheep{
     that.sheepMinHeight += that.sheepAnimate.height / 2;
     that.sheepMaxHeight -= that.sheepAnimate.height / 2;
 
+    /*let shape = new Graphics();
+    shape.beginFill('0x000fff').drawRect(0, 0, that.sheepAnimate.width, that.sheepAnimate.height).closePath();
+
+    shape.pivot.set(that.sheepAnimate.width / 2, that.sheepAnimate.height / 2);*/
+
     that.sheepContainer.addChild(that.sheepAnimate, that.smiling);
 
     //that.sheepContainer.hitArea = new Rectangle(0, 0, that.sheepAnimate.width, that.sheepAnimate.height);
@@ -200,6 +206,7 @@ class Sheep{
     that.sheepContainer.minHeight = that.sheepAnimate.height;
 
     that.sleepCon = that.sleep();
+
     that.sheepContainer.addChild(that.sleepCon);
     that.sleepCon.x = that.sleepCon.width / 2 + 6;
     that.sleepCon.y = -that.sleepCon.height / 2 - 10;
