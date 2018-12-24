@@ -81,7 +81,7 @@ class GameBg {
     }).start();
 
     this.download.interactive = true;
-    this.download.on('tap', function(){
+    this.download.on('pointertap', function(){
       fbClick();
     });
 

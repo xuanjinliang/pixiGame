@@ -59,7 +59,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     // https://github.com/ampedandwired/html-webpack-plugin
     new HtmlWebpackPlugin({
       filename: 'index.html',
-      template: `${process.cwd()}/src/sheep/view/index.html`,
+      template: `${process.cwd()}/src/tiktok/view/index.html`,
       inject: true
     }),
     // copy custom static assets
