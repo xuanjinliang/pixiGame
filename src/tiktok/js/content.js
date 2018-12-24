@@ -121,7 +121,7 @@ class Content{
     let smiling = new Sprite(loader.resources['smiling'].texture);
 
     smiling.scale.set(40 / smiling.width);
-    smiling.pivot.set(smiling.width / 2, smiling.height / 2);
+    smiling.anchor.set(0.5, 0.5);
     smiling.x = 40;
     smiling.y = 82;
     smiling.rotation = 0;
@@ -140,7 +140,7 @@ class Content{
     let play = new Sprite(loader.resources['play'].texture);
 
     play.scale.set(30 / play.width);
-    play.pivot.set(play.width / 2, play.height / 2);
+    play.anchor.set(0.5, 0.5);
     play.x = this.containerW - 40;
     play.y = 90;
 
@@ -274,17 +274,17 @@ class Content{
     this.changeHead(1);
 
     let heart = new Sprite(loader.resources['heart'].texture);
-    heart.pivot.set(heart.width / 2, heart.height / 2);
+    heart.anchor.set(0.5, 0.5);
     heart.x = (53 - heart.width) / 2 + heart.width / 2;
     heart.y = 70 + heart.height / 2;
 
     let msg = new Sprite(loader.resources['msg'].texture);
-    msg.pivot.set(msg.width / 2, msg.height / 2);
+    msg.anchor.set(0.5, 0.5);
     msg.x = (53 - msg.width) / 2 + msg.width / 2;
     msg.y = 120 + msg.height / 2;
 
     let transmit = new Sprite(loader.resources['transmit'].texture);
-    transmit.pivot.set(transmit.width / 2, transmit.height / 2);
+    transmit.anchor.set(0.5, 0.5);
     transmit.x = (53 - transmit.width) / 2 + transmit.width / 2;
     transmit.y = 170 + transmit.height / 2;
 
