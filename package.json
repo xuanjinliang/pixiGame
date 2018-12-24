@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/xuanjinliang/pixiGame#readme",
   "dependencies": {
+    "howler": "^2.1.1",
     "lodash": "^4.17.11",
     "pixi-tween": "^0.2.0",
     "pixi.js": "^4.8.4"

@@ -5,6 +5,7 @@
 import _ from "lodash";
 import {Container, loader, Sprite, Graphics, extras, tweenManager, tween} from "pixi.js";
 import config from "./config";
+import Sound from "./Sound";
 import {angleToRadians, fbClick} from "common";
 
 class Content{
@@ -13,7 +14,7 @@ class Content{
     this.containerH = config.containerH;
     this.container = new Container();
     this.iconContainer = new Container();
-    //this.sound = new Sound();
+    this.sound = new Sound();
     this.head = null;
     this.hand = null;
     this.arrow = null;
@@ -35,6 +36,7 @@ class Content{
     }
 
     this.changeHead(parseInt(name.split('_')[1]));
+    this.sound.play(name);
     this.currentVideoName = name;
 
     let animateName = name;
