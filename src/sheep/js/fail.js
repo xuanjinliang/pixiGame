@@ -52,7 +52,7 @@ class Fail{
     }).start();
 
     this.download.interactive = true;
-    this.download.on('tap', (event) => {
+    this.download.on('pointertap', (event) => {
       event.stopPropagation();
       fbClick(this.tryFun);
     });
@@ -61,7 +61,7 @@ class Fail{
     this.again.pivot.set(this.again.width / 2, this.again.height / 2);
 
     this.again.interactive = true;
-    this.again.on('tap', () => {
+    this.again.on('pointertap', () => {
       if(_.isFunction(this.tryFun)){
         this.tryFun();
       }

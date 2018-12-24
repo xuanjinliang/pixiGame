@@ -45,7 +45,7 @@ class Success{
     }).start();
 
     this.continue.interactive = true;
-    this.continue.on('tap', (event) => {
+    this.continue.on('pointertap', (event) => {
       event.stopPropagation();
       fbClick(this.tryFun);
     });

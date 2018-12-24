@@ -128,8 +128,13 @@ class Track{
 
   event() {
     this.container.interactive = true;
-    this.container.on('tap', (event) => {
+    this.container.on('pointertap', (event) => {
       event.stopPropagation();
+
+      //防止不能自动播放
+      if(config.sound && !config.sound.playing()){
+        config.sound.play();
+      }
 
       if(this.fingerCon && this.fingerCon.alpha == 0){
         return;

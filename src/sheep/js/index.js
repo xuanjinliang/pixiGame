@@ -9,6 +9,8 @@ import loadJson from '../json/load.json';
 import progressBarJson from "../json/progressBar.json";
 import sheepJson from "../json/sheep.json";
 import sleepJson from "../json/sleep.json";
+import howler from 'howler';
+import bgSound from "../sound/bg.mp3";
 
 import {loadSheet} from 'common';
 import config from './config';
@@ -165,6 +167,12 @@ class Index {
     document.querySelector('#main').appendChild(config.app.view);
     this.resizeCanvas();
     this.handleFileLoad();
+
+    config.sound = new howler.Howl({
+      src: bgSound,
+      loop: true
+    });
+    config.sound.play();
 
     config.app.ticker.add(this.stageBreakHandler.bind(this));
   }
