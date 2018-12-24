@@ -31,7 +31,7 @@ class Sound{
     this.arraySound.forEach((o) => {
       o.stop();
     });
-    
+
     this.arraySound[num].play();
   }
 }
