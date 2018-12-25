@@ -3,10 +3,10 @@
  */
 
 import _ from "lodash";
-import {Container, loader, Sprite, Graphics, extras, tweenManager, tween} from "pixi.js";
+import {Container, loader, Sprite, Graphics, extras, tweenManager, tween, Point} from "pixi.js";
 import config from "./config";
 import Sound from "./Sound";
-import {angleToRadians, fbClick} from "common";
+import {angleToRadians, hitTestGloable, fbClick} from "common";
 
 class Content{
   constructor() {
@@ -405,6 +405,7 @@ class Content{
 
     /** @this Foo */
     function onDragEnd(){
+      config.title.interactive = true;
       that.eventControl = false;
 
       if(that.recordVideo.length == that.moveIconArray.length){
@@ -412,14 +413,9 @@ class Content{
         return;
       }
 
-      let targetGlbP = this.getGlobalPosition(),
-        videoTarget = that.videoWinCon,
-        videoGloP = videoTarget.getGlobalPosition();
+      let newPoint = new Point(this.getGlobalPosition().x, this.getGlobalPosition().y + this.getBounds().height / 2);
 
-      let vx = targetGlbP.x - this.width / 2 - (videoGloP.x + videoTarget.width),
-        vy = targetGlbP.y - (videoGloP.y + videoTarget.height);
-
-      if(isMove == false || ((vx < 0 && vy < 0) && this.name != that.currentVideoName)){
+      if(isMove == false || (hitTestGloable(newPoint, that.videoWinCon) && this.name != that.currentVideoName)){
         that.video(this.name);
 
         let index = that.moveIconArray.indexOf(this);
@@ -436,6 +432,7 @@ class Content{
 
     /** @this Foo */
     function onDragDown(event){
+      config.title.interactive = false;
       that.eventControl = true;
       this.data = event.data;
       startPoint = {x: this.x, y: this.y};

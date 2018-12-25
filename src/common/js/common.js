@@ -3,7 +3,7 @@
  */
 
 import _ from 'lodash';
-import {Spritesheet, loader} from "pixi.js";
+import {Spritesheet, loader, Point} from "pixi.js";
 
 function compareWH(o, bool){
   let array = bool ? ['minWidth', 'width'] : ['minHeight', 'height'];
@@ -69,6 +69,50 @@ export function hitTestRectangle(r1, r2) {
   }
 
   return hit;
+}
+
+export function hitTestGloable(point, target){
+  if(!(point instanceof Point)){
+    console.warn('point is not PIXI.point');
+    return;
+  }
+
+  if(!target){
+    console.warn('target not null');
+    return;
+  }
+
+  let x1 = point.x,
+    y1 = point.y;
+
+  let x2 = target.getGlobalPosition().x,
+    y2 = target.getGlobalPosition().y,
+    w = target.getBounds().width,
+    h = target.getBounds().height;
+
+  if(target.pivot.x != 0){
+    x2 -= target.pivot.x;
+  }
+
+  if(target.pivot.y != 0){
+    y2 -= target.pivot.y;
+  }
+
+
+  if(target.anchor){
+    if(target.anchor.x != 0){
+      x2 -= (target.anchor.x * w);
+    }
+
+    if(target.anchor.y != 0){
+      y2 -= (target.anchor.y * h);
+    }
+  }
+
+  if(x1 >= x2 && x1 <= (x2 + w) && y1 >= y2 && y1 <= (y2 + h)){
+    return true;
+  }
+  return false;
 }
 
 export function fbClick(fun) {
