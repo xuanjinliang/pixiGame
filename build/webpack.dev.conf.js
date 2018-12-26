@@ -9,7 +9,7 @@ const merge = require('webpack-merge');
 const path = require('path');
 const baseWebpackConfig = require('./webpack.base.conf');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+//const HtmlWebpackPlugin = require('html-webpack-plugin');
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
 
 //用记判断端口是否被占用
@@ -56,12 +56,12 @@ const devWebpackConfig = merge(baseWebpackConfig, {
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
-    // https://github.com/ampedandwired/html-webpack-plugin
-    new HtmlWebpackPlugin({
+    /*new HtmlWebpackPlugin({
       filename: 'index.html',
       template: `${process.cwd()}/src/tiktok/view/index.html`,
       inject: true
-    }),
+    }),*/
+    ...config.dev.htmlPlugin(),
     // copy custom static assets
     new CopyWebpackPlugin([
       {

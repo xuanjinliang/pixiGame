@@ -11,7 +11,7 @@ exports.assetsPath = function (_path) {
     config.build.assetsSubDirectory : config.dev.assetsSubDirectory;
 
   return path.posix.join(assetsSubDirectory, _path);
-}
+};
 
 exports.cssLoaders = (options = {}) => {
   const cssLoader = {
@@ -48,7 +48,7 @@ exports.cssLoaders = (options = {}) => {
       });
     }
 
-    return ['style-loader'].concat(loaders)
+    return ['style-loader'].concat(loaders);
   }
 
   return {
