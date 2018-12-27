@@ -19,7 +19,8 @@ if(argv.dir){
 }
 
 let dirPathObj = {},
-  htmlObjArray = [];
+  htmlObjArray = [],
+  prodChunks = process.env.NODE_ENV === 'production' ? ['styles', 'vendors', 'common'] : [];
 
 glob.sync(globPath).forEach((element) => {
   if(fs.statSync(element).isDirectory()){
@@ -31,9 +32,9 @@ glob.sync(globPath).forEach((element) => {
     if(fs.statSync(indexJsPath).isFile()){
       dirPathObj[dirName] = indexJsPath;
       htmlObjArray.push({
-        filename: `${dirName}/view/index.html`,
+        filename: `${dirName}/index.html`,
         template: path.join(element, 'view', 'index.html'),
-        chunks: [dirName]
+        chunks: prodChunks.concat([dirName])
       });
     }
   }
@@ -79,9 +80,26 @@ module.exports = {
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'resource',
     assetsPublicPath: '/',
-    productionSourceMap: true,
+    productionSourceMap: false,
     devtool: '#source-map',
     productionGzip: false,
-    productionGzipExtensions: ['js', 'css']
+    productionGzipExtensions: ['js', 'css'],
+    htmlPlugin: () => {
+      let array = [];
+      htmlObjArray.forEach((o) => {
+
+        let obj = Object.assign(o, {
+          inject: true,
+          minify: {
+            removeComments: true,
+            collapseWhitespace: true,
+            removeAttributeQuotes: true
+          },
+          chunksSortMode: 'dependency'
+        });
+        array.push(new HtmlWebpackPlugin(obj));
+      });
+      return array;
+    }
   }
 };

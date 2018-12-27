@@ -3,9 +3,9 @@
  */
 
 import howler from 'howler';
-import sound1 from '../Sound/1.mp3';
-import sound2 from '../Sound/2.mp3';
-import sound3 from '../Sound/3.mp3';
+import sound1 from '../sound/1.mp3';
+import sound2 from '../sound/2.mp3';
+import sound3 from '../sound/3.mp3';
 
 class Sound{
   constructor(){

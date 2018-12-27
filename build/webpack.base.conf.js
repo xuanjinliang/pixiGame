@@ -4,6 +4,7 @@
 
 const path = require('path');
 const config = require('../config');
+const utils = require('./utils');
 
 function resolve (dir) {
   return path.join(__dirname, '..', dir);
@@ -45,11 +46,40 @@ module.exports = {
         loader: 'babel-loader',
         include: [resolve('src'), resolve('node_modules/webpack-dev-server/client')]
       },
+      /*{
+        test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
+        loader: 'file-loader',
+        options: {
+          outputPath: utils.assetsPath("images"),
+          name: '[name]_[hash].[ext]'
+        }
+      },
       {
-        test: /\.(png|jpe?g|gif|svg|mp3)(\?.*)?$/,
+        test: /\.(mp3)(\?.*)?$/,
+        loader: 'file-loader',
+        options: {
+          outputPath: utils.assetsPath("sound"),
+          name: '[name]_[hash].[ext]'
+        }
+      },*/
+      {
+        test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
         loader: 'url-loader',
         options: {
-          limit: 10000
+          limit: 10000,
+          fallback: "file-loader",
+          outputPath: utils.assetsPath("images"),
+          name: '[name]_[hash].[ext]'
+        }
+      },
+      {
+        test: /\.(mp3)(\?.*)?$/,
+        loader: 'url-loader',
+        options: {
+          limit: 10000,
+          fallback: "file-loader",
+          outputPath: utils.assetsPath("sound"),
+          name: '[name]_[hash].[ext]'
         }
       }
     ]

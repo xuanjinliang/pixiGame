@@ -7,7 +7,7 @@
 ```
 npm run dev
 
-访问地址： http://localhost:7000/sheep/view/index.html
+访问地址： http://localhost:7000/sheep/index.html
 ```
 
 指定目录：
@@ -15,5 +15,10 @@ npm run dev
 npm run devDir
 
 输入 sheep / tiktok
+```
+
+### 正式环境
+```
+npm run build
 ```
 
