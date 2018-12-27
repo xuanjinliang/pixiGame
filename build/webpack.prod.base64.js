@@ -20,7 +20,7 @@ const webpackConfig = merge(prodWebpackConfig, {
       {
         test: /\.js$/,
         loader: 'babel-loader',
-        include: [path.join(__dirname, '..', 'src'), path.join(__dirname, '..', 'node_modules/webpack-dev-server/client')]
+        include: [path.join(__dirname, '..', 'src')]
       },
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,

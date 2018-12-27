@@ -1,7 +1,10 @@
 .settings/
 .idea/
+.cache/
+.cache-loader/
 .DS_Store
 node_modules/
 Temp/
 package-lock.json
 dist/
+distBase64/

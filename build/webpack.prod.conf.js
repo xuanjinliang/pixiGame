@@ -2,6 +2,7 @@
  * Created by xuanjinliang on 2018/12/07.
  */
 
+const path = require('path');
 const utils = require('./utils');
 const webpack = require('webpack');
 const config = require('../config');
@@ -32,7 +33,9 @@ const webpackConfig = merge(baseWebpackConfig, {
     new webpack.DefinePlugin({
       'process.env': config.build.mode
     }),
+    new webpack.optimize.ModuleConcatenationPlugin(),
     new UglifyJsPlugin({
+      cache: path.join(process.cwd(), '.cache'),
       uglifyOptions: {
         output: {
           beautify: false
@@ -97,6 +100,11 @@ if (config.build.productionGzip) {
       minRatio: 0.8
     })
   );
+}
+
+if (config.build.bundleAnalyzerReport) {
+  const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+  webpackConfig.plugins.push(new BundleAnalyzerPlugin());
 }
 
 module.exports = webpackConfig;

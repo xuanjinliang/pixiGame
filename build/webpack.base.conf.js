@@ -43,9 +43,15 @@ module.exports = {
       ...(config.dev.useEslint ? [createLintingRule()] : []),
       {
         test: /\.js$/,
-        loader: 'babel-loader',
+        use: (process.env.NODE_ENV === 'production' ? ['cache-loader'] : []).concat(['babel-loader']),
+        //use: ['babel-loader'],
         include: [resolve('src'), resolve('node_modules/webpack-dev-server/client')]
       },
+      /*{
+        test: /\.js$/,
+        loader: 'babel-loader',
+        include: [resolve('src'), resolve('node_modules/webpack-dev-server/client')]
+      },*/
       /*{
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
         loader: 'file-loader',

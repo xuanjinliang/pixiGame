@@ -76,13 +76,13 @@ module.exports = {
   },
   build: {
     mode: 'production',
-    index: path.resolve(__dirname, '../dist/index.html'),
-    assetsRoot: path.resolve(__dirname, '../dist'),
+    assetsRoot: path.resolve(__dirname, (process.env.base64  ? '../distBase64' : '../dist')),
     assetsSubDirectory: 'resource',
     assetsPublicPath: '/',
     productionSourceMap: false,
     devtool: '#source-map',
     productionGzip: false,
+    bundleAnalyzerReport: false,
     productionGzipExtensions: ['js', 'css'],
     htmlPlugin: () => {
       let array = [];
