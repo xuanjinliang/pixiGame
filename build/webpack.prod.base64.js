@@ -9,7 +9,6 @@ const utils = require('./utils');
 const merge = require('webpack-merge');
 const prodWebpackConfig = require('./webpack.prod.conf');
 const config = require('../config');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin');
 
 delete prodWebpackConfig.module.rules;
