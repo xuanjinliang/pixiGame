@@ -19,7 +19,7 @@ const webpackConfig = merge(prodWebpackConfig, {
     rules: [
       {
         test: /\.js$/,
-        loader: 'babel-loader',
+        use: (process.env.NODE_ENV === 'production' ? ['cache-loader'] : []).concat(['babel-loader']),
         include: [path.join(__dirname, '..', 'src')]
       },
       {
