@@ -97,6 +97,11 @@ module.exports = {
           },
           chunksSortMode: 'dependency'
         });
+        if(process.env.base64){
+          obj = Object.assign(obj, {
+            inlineSource: '.(js|css)$'
+          });
+        }
         array.push(new HtmlWebpackPlugin(obj));
       });
       return array;

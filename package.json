@@ -6,6 +6,7 @@
   "scripts": {
     "devDir": "./toolkit/devRunDir.sh",
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
+    "base64": "NODE_ENV=production webpack --colors --config build/webpack.prod.base64.js",
     "build": "node build/build.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -41,6 +42,7 @@
     "file-loader": "^2.0.0",
     "friendly-errors-webpack-plugin": "^1.7.0",
     "glob": "^7.1.3",
+    "html-webpack-inline-source-plugin": "0.0.10",
     "html-webpack-plugin": "^3.2.0",
     "less": "^3.9.0",
     "less-loader": "^4.1.0",
