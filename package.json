@@ -25,7 +25,8 @@
     "howler": "^2.1.1",
     "lodash": "^4.17.11",
     "pixi-tween": "^0.2.0",
-    "pixi.js": "^4.8.4"
+    "pixi.js": "^4.8.4",
+    "stats-js": "^1.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.2.2",

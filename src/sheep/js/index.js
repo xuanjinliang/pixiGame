@@ -2,6 +2,7 @@
  * Created by xuanjinliang on 2018/12/07.
  */
 
+//import Stats from 'stats-js';
 import * as PIXI from 'pixi.js';
 import 'pixi-tween';
 import '../../common/style/common.less';
@@ -19,6 +20,9 @@ import GameBg from './gameBg';
 import Content from "./content";
 import Success from "./success";
 import Fail from "./Fail";
+
+/*let stats = new Stats();
+stats.showPanel(0);*/
 
 class Index {
   constructor(){
@@ -110,6 +114,7 @@ class Index {
   }
 
   stageBreakHandler() {
+    //stats.begin();
     if(!this.result && config.content && config.content.topBar && config.content.topBar.progressBar.remain <= 0){
       this.gameBg.shade.visible = true;
       this.success.container.visible = true;
@@ -133,6 +138,7 @@ class Index {
     }
 
     PIXI.tweenManager.update();
+    //stats.end();
   }
 
   resizeCanvas(){
@@ -175,6 +181,7 @@ class Index {
     config.sound.play();
 
     config.app.ticker.add(this.stageBreakHandler.bind(this));
+    //document.body.appendChild( stats.dom );
   }
 
   event(){
