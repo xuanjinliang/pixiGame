@@ -178,7 +178,7 @@ class Index {
     });
     config.sound.play();
 
-    config.app.ticker.add(this.stageBreakHandler.bind(this));
+    config.app.ticker.add(this.stageBreakHandler, this);
     //document.body.appendChild( stats.dom );
   }
 

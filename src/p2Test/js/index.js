@@ -3,7 +3,7 @@
  */
 
 import '../../common/style/common.less';
-import {Application, Container, tweenManager} from "pixi.js";
+import {Application, Container, Graphics, tweenManager} from "pixi.js";
 import 'pixi-tween';
 import p2 from 'p2';
 import config from "./config";
@@ -11,16 +11,95 @@ import config from "./config";
 class Index{
   constructor() {
     this.loadComplete = false;
-    this.container = null;
+    this.container = new Container();
     this.world = new p2.World({
       gravity:[0, -9.81]
     });
+    this.rectangleBody = null;
+    this.rectShape = null;
+    this.maxSubSteps = 10;
+    this.fixedTimeStep = 1 / 60;
+    this.lastTimeSeconds = null;
+  }
+
+  addRectangle() {
+    let rectW = 120,
+      rectH = 60,
+      rectL = 50 + rectW / 2,
+      rectT = 20 + rectH / 2;
+
+    let rectangleShape = new p2.Box({
+      width: rectW,
+      height: rectH
+    });
+
+    this.rectangleBody = new p2.Body({
+      mass: 5,
+      position: [rectL, config.containerH - rectT],
+      angularAcceleration: 0.1
+    });
+
+    this.rectangleBody.addShape(rectangleShape);
+    this.world.addBody(this.rectangleBody);
+
+    let rectShape = new Graphics();
+    rectShape.lineStyle(1, '0x000000', 1, 0).beginFill('0xffffff').drawRect(0, 0, rectW, rectH).closePath();
+    rectShape.pivot.set(rectW / 2, rectH / 2);
+
+    rectShape.x = rectL;
+    rectShape.y = rectT;
+
+    this.rectShape = rectShape;
+    this.container.addChild(this.rectShape);
+  }
+
+  setWall() {
+    //天花板
+    let floor = new p2.Body({
+      angle: Math.PI,
+      position: [0, config.containerH]
+    });
+
+    //右墙
+    let rightWall = new p2.Body({
+      angle: Math.PI / 2,
+      position: [config.containerW, 0]
+    });
+
+    //地面
+    let ceiling = new p2.Body({
+      position: [0, 0]
+    });
+
+    //左墙
+    let leftWall = new p2.Body({
+      angle: -Math.PI / 2,
+      position: [0, 0]
+    });
+
+    floor.addShape(new p2.Plane());
+    ceiling.addShape(new p2.Plane());
+    rightWall.addShape(new p2.Plane());
+    leftWall.addShape(new p2.Plane());
+
+    this.world.addBody(floor);
+    this.world.addBody(rightWall);
+    this.world.addBody(ceiling);
+    this.world.addBody(leftWall);
+  }
+
+  run(){
+    //console.log(this.rectangleBody.interpolatedPosition);
+    this.rectShape.x = this.rectangleBody.interpolatedPosition[0];
+    this.rectShape.y = config.containerH - this.rectangleBody.interpolatedPosition[1];
+    this.rectShape.rotation = -this.rectangleBody.angle;
   }
 
   setContainer(){
-    this.container = new Container();
+    let shape = new Graphics();
+    shape.lineStyle(1, '0x000000', 1, 0).beginFill('0xffffff').drawRect(0, 0, config.containerW, config.containerH).closePath();
 
-    //this.container.addChild();
+    this.container.addChild(shape);
 
     config.stage.addChild(this.container);
 
@@ -31,6 +110,9 @@ class Index{
   loadLoadingComplete() {
     this.loadComplete = true;
     this.setContainer();
+
+    this.addRectangle();
+    this.setWall();
   }
 
   setContainerLocation() {
@@ -48,6 +130,13 @@ class Index{
 
   stageBreakHandler() {
     tweenManager.update();
+    let timeSeconds = config.app.ticker.lastTime / 1000;
+    this.lastTimeSeconds = this.lastTimeSeconds || timeSeconds;
+    let timeSinceLastCall = timeSeconds - this.lastTimeSeconds;
+    if(this.world && this.world.step){
+      this.world.step(this.fixedTimeStep, timeSinceLastCall, this.maxSubSteps);
+    }
+    this.run();
   }
 
   resizeCanvas(){
@@ -83,7 +172,7 @@ class Index{
     this.resizeCanvas();
     this.loadLoadingComplete();
 
-    config.app.ticker.add(this.stageBreakHandler.bind(this));
+    config.app.ticker.add(this.stageBreakHandler, this);
   }
 
   init() {

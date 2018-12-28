@@ -111,7 +111,7 @@ class Index{
     this.resizeCanvas();
     this.handleFileLoad();
 
-    config.app.ticker.add(this.stageBreakHandler.bind(this));
+    config.app.ticker.add(this.stageBreakHandler, this);
   }
 
   event(){
