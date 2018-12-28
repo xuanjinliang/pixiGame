@@ -23,19 +23,30 @@ let dirPathObj = {},
   prodChunks = process.env.NODE_ENV === 'production' ? ['styles', 'vendors', 'common'] : [];
 
 glob.sync(globPath).forEach((element) => {
-  if(fs.statSync(element).isDirectory()){
+  if(fs.existsSync(element) && fs.statSync(element).isDirectory()){
     let dirNameArray = element.split(path.sep),
       dirName = dirNameArray[dirNameArray.length - 1];
 
     let indexJsPath = path.join(element, 'js', 'index.js');
 
-    if(fs.statSync(indexJsPath).isFile()){
+    if(fs.existsSync(indexJsPath) && fs.statSync(indexJsPath).isFile()){
       dirPathObj[dirName] = indexJsPath;
-      htmlObjArray.push({
+
+      let htmlPath = path.join(element, 'view', 'index.html');
+
+      let tempObj = fs.existsSync(htmlPath) ? {
+        template: htmlPath
+      } : {
+        templateParameters: {
+          title: dirName
+        },
+        template: path.join(element, '..', 'index.html')
+      };
+
+      htmlObjArray.push(Object.assign({
         filename: `${dirName}/index.html`,
-        template: path.join(element, 'view', 'index.html'),
         chunks: prodChunks.concat([dirName])
-      });
+      }, tempObj));
     }
   }
 });
