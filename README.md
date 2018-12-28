@@ -2,7 +2,7 @@
 
 用于开发pixi游戏的demo
 
-###开发环境：
+### 开发环境：
 运行所有目录：
 ```
 npm run dev
@@ -20,5 +20,9 @@ npm run devDir
 ### 正式环境
 ```
 npm run build
+```
+### 本地环境
+```
+npm run base64
 ```
 
