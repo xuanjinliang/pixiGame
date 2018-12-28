@@ -37,16 +37,15 @@ class Index {
   setContainer(){
     this.container = new PIXI.Container();
 
-    this.container.width = config.containerW;
-    this.container.height = config.containerH;
-
-    this.setContainerLocation();
-
     config.content = new Content();
 
     this.container.addChild(config.content.setContentRect(), this.gameBg.setDownload());
 
     config.stage.addChild(this.gameBg.setBg(), this.container, this.gameBg.setShade(config.stageW, config.stageH), this.success.init(), this.fail.init());
+
+    this.container.pivot.set(config.containerW / 2, config.containerH / 2);
+
+    this.setContainerLocation();
   }
 
   removeGame(){
@@ -56,8 +55,6 @@ class Index {
     this.fail = new Fail();
     this.container.removeChildren(0);
     config.stage.removeChildren(0);
-    //config.content.destroy();
-    //createjs.Ticker.reset();
   }
 
   handleFileLoad(){
@@ -99,12 +96,13 @@ class Index {
   setContainerLocation() {
     if(config.canvasW / config.canvasH > config.WHRadio){
       config.containerRadio = config.stageH / config.containerH;
-      this.container.x = (config.stageW - config.containerW * config.containerRadio) / 2;
     }else{
       config.containerRadio = config.stageW / config.containerW;
-      this.container.x = 0;
     }
-    this.container.y = (config.stageH - config.containerH * config.containerRadio) / 2;
+
+    this.container.x = config.stageW / 2;
+    this.container.y = config.stageH / 2;
+
     this.container.scale.set(config.containerRadio);
 
     this.gameBg.resizeBg();
