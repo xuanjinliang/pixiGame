@@ -394,7 +394,8 @@ class Content{
     ele.interactive = true;
 
     /** @this Foo */
-    function onDragMove() {
+    function onDragMove(event) {
+      event.stopPropagation();
       if(dragging){
         let newPosition = this.data.getLocalPosition(this.parent);
         this.x = startPoint.x + (newPosition.x - startLocalPoint.x);
@@ -404,8 +405,8 @@ class Content{
     }
 
     /** @this Foo */
-    function onDragEnd(){
-      config.title.interactive = true;
+    function onDragEnd(event){
+      event.stopPropagation();
       that.eventControl = false;
 
       if(that.recordVideo.length == that.moveIconArray.length){
@@ -432,7 +433,7 @@ class Content{
 
     /** @this Foo */
     function onDragDown(event){
-      config.title.interactive = false;
+      event.stopPropagation();
       that.eventControl = true;
       this.data = event.data;
       startPoint = {x: this.x, y: this.y};
@@ -449,7 +450,7 @@ class Content{
     ele.on('pointerdown', onDragDown);
     //ele.on("pointermove", onDragMove);
     ele.on("pointerup", onDragEnd);
-    ele.on("pointeroutside", onDragEnd);
+    ele.on("pointerupoutside", onDragEnd);
   }
 
   init() {

@@ -20,6 +20,8 @@ class Index{
     this.maxSubSteps = 10;
     this.fixedTimeStep = 1 / 60;
     this.lastTimeSeconds = null;
+    this.mouseBody = null;
+    this.mouseConstraint = null;
   }
 
   addRectangle() {
@@ -51,6 +53,9 @@ class Index{
 
     this.rectShape = rectShape;
     this.container.addChild(this.rectShape);
+
+    this.mouseBody = new p2.Body();
+    this.world.addBody(this.mouseBody);
   }
 
   setWall() {
@@ -88,6 +93,65 @@ class Index{
     this.world.addBody(leftWall);
   }
 
+  getPhysicsCoord(event) {
+    let x = event.x,
+      y = event.y;
+
+    y = config.containerH - y;
+
+    return [x, y];
+  }
+
+  event() {
+    let that = this,
+      startLocalPoint = null;
+
+    that.rectShape.interactive = true;
+
+    /** @this Foo */
+    function onDragEnd(){
+      event.stopPropagation();
+      that.world.removeConstraint(that.mouseConstraint);
+      that.mouseConstraint = null;
+      this.off('pointermove', onDragMove);
+    }
+
+    /** @this Foo */
+    function onDragMove(event){
+      event.stopPropagation();
+      let newPosition = that.getPhysicsCoord(this.data.getLocalPosition(this.parent));
+      that.mouseBody.position[0] = newPosition[0];
+      that.mouseBody.position[1] = newPosition[1];
+    }
+
+    /** @this Foo */
+    function onDragDown(event){
+      event.stopPropagation();
+      this.data = event.data;
+      startLocalPoint = this.data.getLocalPosition(this.parent);
+      let position = that.getPhysicsCoord(startLocalPoint);
+      let hitBodies = that.world.hitTest(position, [that.rectangleBody]);
+
+      if(hitBodies.length){
+        that.mouseBody.position[0] = position[0];
+        that.mouseBody.position[1] = position[1];
+
+        that.mouseConstraint = new p2.RevoluteConstraint(that.mouseBody, that.rectangleBody, {
+          worldPivot: position,
+          collideConnected: false
+        });
+
+        that.world.addConstraint(that.mouseConstraint);
+        this.on('pointermove', onDragMove);
+      }
+    }
+
+    that.rectShape.on('pointerdown', onDragDown);
+    that.rectShape.on('pointerup', onDragEnd);
+    that.rectShape.on('pointercancel', onDragEnd);
+    that.rectShape.on('pointerupoutside', onDragEnd);
+  }
+
   run(){
     //console.log(this.rectangleBody.interpolatedPosition);
     this.rectShape.x = this.rectangleBody.interpolatedPosition[0];
@@ -113,6 +177,7 @@ class Index{
 
     this.addRectangle();
     this.setWall();
+    this.event();
   }
 
   setContainerLocation() {

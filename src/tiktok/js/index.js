@@ -40,8 +40,6 @@ class Index{
       fbClick();
     });
 
-    config.title = title;
-
     this.container.addChild(config.content.init(), title);
 
     config.stage.addChild(this.gameBg.setBg(), this.container);
