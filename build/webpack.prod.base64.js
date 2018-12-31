@@ -41,6 +41,10 @@ const webpackConfig = merge(prodWebpackConfig, {
           name: '[name]_[hash].[ext]'
         }
       },
+      {
+        test: /\.(atlas)(\?.*)?$/,
+        loader: 'raw-loader'
+      },
       ...utils.styleLoaders({
         sourceMap: config.build.productionSourceMap,
         extract: true,

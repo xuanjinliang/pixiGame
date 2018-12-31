@@ -6,7 +6,7 @@ import '../../common/style/common.less';
 import {Application, Container, Graphics, tweenManager} from "pixi.js";
 import 'pixi-tween';
 import p2 from 'p2';
-import config from "./config";
+import config from "config";
 
 class Index{
   constructor() {

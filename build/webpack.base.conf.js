@@ -35,7 +35,8 @@ module.exports = {
     alias: {
       '@': resolve('src'),
       'common': resolve('src/common/js/common.js'),
-      'random': resolve('src/common/js/random.js')
+      'random': resolve('src/common/js/random.js'),
+      'config': resolve('src/common/js/config.js')
     }
   },
   module: {
@@ -87,6 +88,10 @@ module.exports = {
           outputPath: utils.assetsPath("sound"),
           name: '[name]_[hash].[ext]'
         }
+      },
+      {
+        test: /\.(atlas)(\?.*)?$/,
+        loader: 'raw-loader'
       }
     ]
   }
