@@ -32,7 +32,7 @@ class Index{
     let spineJsonParser = new spine.core.SkeletonJson(spineAtlasLoader);
 
     // in case if you want everything scaled up two times
-    spineJsonParser.scale = 0.4;
+    spineJsonParser.scale = 0.6;
     //console.log(spineJsonParser);
 
     let spineData = spineJsonParser.readSkeletonData(DragonJson),
