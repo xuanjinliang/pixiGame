@@ -428,7 +428,7 @@ class Content{
 
       this.off("pointermove", DragMove);
     }
-    
+
     function DragDown(event){
       event.stopPropagation();
       that.eventControl = true;
