@@ -393,8 +393,7 @@ class Content{
 
     ele.interactive = true;
 
-    /** @this Foo */
-    function onDragMove(event) {
+    function DragMove(event) {
       event.stopPropagation();
       if(dragging){
         let newPosition = this.data.getLocalPosition(this.parent);
@@ -404,8 +403,7 @@ class Content{
       }
     }
 
-    /** @this Foo */
-    function onDragEnd(event){
+    function DragEnd(event){
       event.stopPropagation();
       that.eventControl = false;
 
@@ -428,11 +426,10 @@ class Content{
       that.moveContainer.setChildIndex(this, 0);
       that.resetMove();
 
-      this.off("pointermove", onDragMove);
+      this.off("pointermove", DragMove);
     }
-
-    /** @this Foo */
-    function onDragDown(event){
+    
+    function DragDown(event){
       event.stopPropagation();
       that.eventControl = true;
       this.data = event.data;
@@ -444,13 +441,13 @@ class Content{
       dragging = true;
       isMove = false;
 
-      this.on("pointermove", onDragMove);
+      this.on("pointermove", DragMove);
     }
 
-    ele.on('pointerdown', onDragDown);
-    //ele.on("pointermove", onDragMove);
-    ele.on("pointerup", onDragEnd);
-    ele.on("pointerupoutside", onDragEnd);
+    ele.on('pointerdown', DragDown);
+    //ele.on("pointermove", DragMove);
+    ele.on("pointerup", DragEnd);
+    ele.on("pointerupoutside", DragEnd);
   }
 
   init() {
